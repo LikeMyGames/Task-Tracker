@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Document</title>
+    <script src="./script.js"></script>
+</head>
+<body>
+    <div class="main">
+        <div class="list_menu">
+			<h2 class="list_menu_title">
+				Lists
+			</h2>
+			<div class="list_menu_lists">
+				<!-- <button type="button" id="list-1" class="list_menu_list" onclick="loadList(this.id)">
+					<h3 class="list_menu_item_title">
+						List 1
+					</h3>
+				</button>
+				<button type="button" id="list-2" class="list_menu_list" onclick="loadList(this.id)">
+					<h3 class="list_menu_item_title">
+						List 2
+					</h3>
+				</button>
+				<button type="button" id="list-3" class="list_menu_list" onclick="loadList(this.id)">
+					<h3 class="list_menu_item_title">
+						List 3
+					</h3>
+				</button>
+				<button type="button" id="list-4" class="list_menu_list" onclick="loadList(this.id)">
+					<h3 class="list_menu_item_title">
+						List 4
+					</h3>
+				</button>
+				<button type="button" id="list-5" class="list_menu_list" onclick="loadList(this.id)">
+					<h3 class="list_menu_item_title">
+						List 5
+					</h3>
+				</button> -->
+			</div>
+			<button type="button" class="list_menu_add" onclick="getLists()">
+				<span class="material-symbols-rounded">
+					add_circle
+				</span>
+				<h3>
+					List
+				</h3>
+			</button>
+        </div>
+        <div class="main_view">
+            <h1 class="list_name">
+				List Name
+			</h1>
+            <div class="list_data">
+                <!-- <button type="button" id="task-one" class="list_data_item" onclick="taskClick(this.id)">
+					<h3 class="list_data_item_title">
+						Lorem ipsum
+					</h3>
+					<ul class="list_data_item_attributes">
+						<li class="list_data_item_attribute">
+							<p>Task #:</p>
+							<p class="list_data_item_task_num">1</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Importance:</p>
+							<p class="list_data_item_severity">Very low</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Completed?:</p>
+							<p class="list_data_item_completeion">No</p>
+						</li>
+					</ul>
+                </button>
+                <button type="button" id="task-two" class="list_data_item" onclick="taskClick(this.id)">
+					<h3 class="list_data_item_title">
+						Lorem ipsum
+					</h3>
+					<ul class="list_data_item_attributes">
+						<li class="list_data_item_attribute">
+							<p>Task #:</p>
+							<p class="list_data_item_task_num">2</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Importance:</p>
+							<p class="list_data_item_severity">Low</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Completed?:</p>
+							<p class="list_data_item_completeion">No</p>
+						</li>
+					</ul>
+                </button>
+				<button type="button" id="task-three" class="list_data_item" onclick="taskClick(this.id)">
+					<h3 class="list_data_item_title">
+						Lorem ipsum
+					</h3>
+					<ul class="list_data_item_attributes">
+						<li class="list_data_item_attribute">
+							<p>Task #:</p>
+							<p class="list_data_item_task_num">3</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Importance:</p>
+							<p class="list_data_item_severity">Medium</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Completed?:</p>
+							<p class="list_data_item_completeion">No</p>
+						</li>
+					</ul>
+                </button>
+				<button type="button" id="task-four" class="list_data_item" onclick="taskClick(this.id)">
+					<h3 class="list_data_item_title">
+						Lorem ipsum
+					</h3>
+					<ul class="list_data_item_attributes">
+						<li class="list_data_item_attribute">
+							<p>Task #:</p>
+							<p class="list_data_item_task_num">4</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Importance:</p>
+							<p class="list_data_item_severity">High</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Completed?:</p>
+							<p class="list_data_item_completeion">No</p>
+						</li>
+					</ul>
+                </button>
+				<button type="button" id="task-five" class="list_data_item" onclick="taskClick(this.id)">
+					<h3 class="list_data_item_title">
+						Lorem ipsum
+					</h3>
+					<ul class="list_data_item_attributes">
+						<li class="list_data_item_attribute">
+							<p>Task #:</p>
+							<p class="list_data_item_task_num">5</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Importance:</p>
+							<p class="list_data_item_severity">Very high</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Completed?:</p>
+							<p class="list_data_item_completeion">No</p>
+						</li>
+					</ul>
+                </button>
+				<button type="button" id="task-six" class="list_data_item" onclick="taskClick(this.id)">
+					<h3 class="list_data_item_title">
+						Lorem ipsum
+					</h3>
+					<ul class="list_data_item_attributes">
+						<li class="list_data_item_attribute">
+							<p>Task #:</p>
+							<p class="list_data_item_task_num">6</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Importance:</p>
+							<p class="list_data_item_severity">medium</p>
+						</li>
+						<li class="list_data_item_attribute">
+							<p>Completed?:</p>
+							<p class="list_data_item_completeion">No</p>
+						</li>
+					</ul>
+                </button> -->
+            </div>
+        </div>
+        <div class="edit_panel">
+            <h2 class="properties">
+				Properties
+            </h2>
+            <div class="edit_panel_attributes">
+				<!-- <div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Name:</h3>
+					<input type="text" class="edit_panel_item_value" label="name_edit_input" placeholder="Name">
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Importance</h3>
+					<select name="task_importance_selector" class="edit_panel_item_value" title="importance_selector" onchange="importanceChanged()">
+						<option value="1">Very low</option>
+						<option value="2">Low</option>
+						<option value="3" selected>Medium</option>
+						<option value="4">High</option>
+						<option value="5">Very high</option>
+					</select>
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Completed?:</h3>
+					<button type="button" class="edit_panel_item_value" onclick="completionChanged()">
+						<span class="material-symbols-rounded edit_panel_item_value_icon">
+							close
+						</span>
+					</button>
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Notes:</h3>
+					<textarea spellcheck="false" autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes"></textarea>
+				</div> -->
+            </div>
+			<div class="edit_panel_close">
+				<button type="button" class="edit_panel_close_button" onclick="closeTaskEdit(event)">
+					<span class="material-symbols-rounded">
+						save
+					</span>
+					<h3>
+						Save/Close
+					</h3>
+				</button>
+			</div>
+        </div>
+    </div>
+</body>
+</html>
