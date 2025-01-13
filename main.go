@@ -9,7 +9,7 @@ import (
 
 func main() {
 	config := TaskManager.Config{
-		ListDirectory:          "G:/Projects/VSCode/TaskManager/Lists/",
+		ListDirectory:          "./Lists/",
 		FileNameSameAsListName: true,
 		DeleteCompletedTasks:   true,
 		SortAttribute:          "task #",
@@ -20,6 +20,16 @@ func main() {
 		cmd := queryParams["cmd"]
 
 		log.Println("\"cmd\" URL query value: ", cmd)
+		if len(cmd) == 0 {
+			help, _ := TaskManager.RunCommand(config, []string{"help"}...)
+			jsonHelp, err := json.Marshal(help)
+			if err != nil {
+				log.Fatal(err)
+				return
+			}
+			w.Write([]byte(jsonHelp))
+			return
+		}
 		data, data2 := TaskManager.RunCommand(config, cmd...)
 		log.Println("data1: ", data)
 		log.Println("data2: ", data2)
