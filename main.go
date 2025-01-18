@@ -9,11 +9,7 @@ import (
 
 func main() {
 	config := TaskManager.Config{
-<<<<<<< HEAD
-		ListDirectory:          "./Lists/",
-=======
 		ListDirectory:          "G:/Projects/VSCode/TaskManagerWithGUI/Lists/",
->>>>>>> a4ab5ab (Changing save file structure)
 		FileNameSameAsListName: true,
 		DeleteCompletedTasks:   true,
 		SortAttribute:          "task #",
