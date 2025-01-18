@@ -40,13 +40,30 @@ var currentTask = {
 	"name": null,
 	"severity": null,
 	"completionStatus": null,
-	"index": null
+	"id": null
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Your function code here
-    // getLists();
-});
+window.onload = ( function(){
+	getLists();
+	setTimeout(() => {
+		if(localStorage.getItem("activeListID") != "" | null) {
+			loadList(localStorage.getItem("activeListID"))
+		}
+		setTimeout(() => {
+			if(localStorage.getItem("activeTaskID") != "" | null) {
+				loadTask(localStorage.getItem("activeTaskID"))
+			}
+		}, 50)
+	}, 50)
+	
+ })
+
+function useLocalStorage() {
+	if(localStorage.getItem("activeListID") != "" | null) {
+		console.log("loading stored list")
+		loadList(localStorage.getItem("activeListID"))
+	}
+}
 
 // function help() {
 //     fetch("http://127.0.0.1:8080/help")
@@ -97,7 +114,7 @@ function loadList(id) {
 
     let listName = button.title
 	activeFileName = listName
-	localStorage.setItem("activeFileName", activeFileName)
+	localStorage.setItem("activeListID", id)
 
     fetch(`http://127.0.0.1:8080/?cmd=opls&cmd=${listName}`)
     	.then(res => {
@@ -143,7 +160,7 @@ function loadList(id) {
 					completionStatus = "Yes"
 				}
                 taskContainer.appendChild(elementFromHTML(`
-					<button type="button" title="${name}" id="task-${name}" class="list_data_item" onclick="loadTask(this.title)">
+					<button type="button" id="task-${name}" class="list_data_item" onclick="loadTask('task-${name}')">
 						<h3 class="list_data_item_title">
 							${name}
 						</h3>
@@ -171,15 +188,17 @@ function createList() {
     alert("need to make this function")
 }
 
-function loadTask(title) {
+function loadTask(id) {
     let buttons = document.querySelectorAll(`.list_data_item`)
     buttons.forEach(button => {
         button.classList.remove("list_data_item_active")
     });
 
-    let button = document.querySelector(`[title="${title}"]`)
-	console.log(title)
+    let button = document.querySelector(`[id="${id}"]`)
+	console.log(id)
     button.classList.add("list_data_item_active")
+
+	localStorage.setItem("activeTaskID", button.id)
 
 	currentTask.index = button.querySelector(".list_data_item_task_num").textContent - 1
 	console.log("current task " + currentTask.index)
@@ -278,9 +297,7 @@ function closeTaskEdit(e) {
 	console.log("completionStatus: " + completionStatus)
 	console.log("index: " + index)
 
-	fetch(`http://127.0.0.1:8080?cmd=edls&cmd=task&cmd=${name}&cmd=${severity}&cmd=${completionStatus}&cmd=${index}&cmd=${activeFileName}`, {
-		method: 'GET',
-	})
+	fetch(`http://127.0.0.1:8080?cmd=edls&cmd=task&cmd=${name}&cmd=${severity}&cmd=${completionStatus}&cmd=${index}&cmd=${activeFileName}`)
 	setTimeout(() => {console.log("hello")}, 3000)
 		// .then(res => {
 

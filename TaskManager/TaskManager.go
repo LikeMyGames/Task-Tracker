@@ -627,6 +627,7 @@ func Edconf(args ...string) (Config, any) {
 }
 
 func RunCommand(config Config, word ...string) (any, any) {
+	os.Chdir(config.ListDirectory)
 	switch word[0] {
 	case "help":
 		return Help(word...), nil
