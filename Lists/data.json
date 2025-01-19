@@ -1,1 +1,1 @@
-{"name":"i'm-changing-the-name","tasks":[{"name":"do homework","severity":3,"completionStatus":false},{"name":"feed poppy dinner","severity":5,"completionStatus":false},{"name":"Test-Task","severity":3,"completionStatus":false}]}
+{"name":"i'm-changing-the-name","tasks":[{"name":"do homework","severity":3,"completionStatus":true,"note":"undefined"},{"name":"feed poppy dinner","severity":5,"completionStatus":false,"note":""},{"name":"Test-Task","severity":3,"completionStatus":false,"note":""}]}

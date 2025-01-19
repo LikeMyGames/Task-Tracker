@@ -29,6 +29,7 @@ type Task struct {
 	Name             string `json:"name"`
 	Severity         int    `json:"severity"`
 	CompletionStatus bool   `json:"completionStatus"`
+	Note             string `json:"note"`
 }
 
 var configData Config
@@ -329,6 +330,7 @@ func Mktk(args ...string) (TaskList, Task) {
 	}
 	name := args[1]
 	severity, err := strconv.ParseInt(args[2], 10, 64)
+	note := args[3]
 	if err != nil {
 		log.Fatal(err)
 		return TaskList{}, Task{}
@@ -342,9 +344,9 @@ func Mktk(args ...string) (TaskList, Task) {
 		fmt.Println("A list file needs to be opened before a task can be created. You can open a list file by using the \"opls\" command. If you need to learn how to use this command you can use the \"help\" by typing in \"help opls\" into the command input.")
 		return TaskList{}, Task{}
 	}
-	activeList.Tasks = append(activeList.Tasks, Task{name, int(severity), false})
+	activeList.Tasks = append(activeList.Tasks, Task{name, int(severity), false, note})
 	saveActiveListToJSON()
-	return activeList, Task{name, int(severity), false}
+	return activeList, Task{name, int(severity), false, note}
 }
 
 func Edls(config Config, args ...string) (TaskList, string) {
@@ -432,32 +434,36 @@ func EditListTasks() TaskList {
 
 // need name, severity, completion status, index, file in that order
 func EditListTask(config Config, args ...string) TaskList {
+	log.Println(args)
+
 	severity, err := strconv.Atoi(args[1])
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Println(severity)
+
 	completionStatus, err := strconv.ParseBool(args[2])
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Println(completionStatus)
 
-	taskIndex, err := strconv.Atoi(args[3])
+	taskIndex, err := strconv.Atoi(args[4])
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Println(taskIndex)
 
-	activeFileName = args[4] + ".json"
+	activeFileName = args[5] + ".json"
 	log.Println(activeFileName)
 
-	Opls(config, []string{"opls", args[4]}...)
+	Opls(config, []string{"opls", args[5]}...)
 
 	activeList.Tasks[taskIndex] = Task{
 		Name:             args[0],
 		Severity:         severity,
 		CompletionStatus: completionStatus,
+		Note:             args[3],
 	}
 
 	log.Println(activeList)

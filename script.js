@@ -53,8 +53,8 @@ window.onload = ( function(){
 			if(localStorage.getItem("activeTaskID") != "" | null) {
 				loadTask(localStorage.getItem("activeTaskID"))
 			}
-		}, 50)
-	}, 50)
+		}, 25)
+	}, 25)
 	
  })
 
@@ -131,6 +131,7 @@ function loadList(id) {
             listName.textContent = data.data1.name
 
             let taskContainer = document.querySelector(".list_data")
+			taskContainer.innerHTML = ""
             for (let i = 0; i<data.data1.tasks.length; i++) {
 				let name = data.data1.tasks[i].name
 				let taskNum = i+1
@@ -185,7 +186,7 @@ function loadList(id) {
 }
 
 function createList() {
-    alert("need to make this function")
+    popup()
 }
 
 function loadTask(id) {
@@ -206,6 +207,11 @@ function loadTask(id) {
 	currentTask.severity = activeList.tasks[currentTask.index].severity
 	currentTask.completionStatus = activeList.tasks[currentTask.index].completionStatus
 
+	let completionStatus = "close"
+	if(currentTask.completionStatus){
+		completionStatus = "check"
+	}
+
 	localStorage.setItem("currentTask", currentTask)
 
 	let editAttributes = document.querySelector(".edit_panel_attributes")
@@ -214,7 +220,7 @@ function loadTask(id) {
 		<div>
 			<div class="edit_panel_item">
 				<h3 class="edit_panel_item_title">Name:</h3>
-				<input type="text" class="edit_panel_item_value" label="name_edit_input" placeholder="Name" value="${currentTask.name}" onchange="nameChanged()">
+				<input type="text" class="edit_panel_item_value" label="name_edit_input" placeholder="Name" value="${currentTask.name}" onchange="nameChanged()" autocomplete="none">
 			</div>
 			<div class="edit_panel_item">
 				<h3 class="edit_panel_item_title">Importance</h3>
@@ -230,13 +236,13 @@ function loadTask(id) {
 				<h3 class="edit_panel_item_title">Completed?:</h3>
 				<button type="button" class="edit_panel_item_value" onclick="completionChanged()">
 					<span class="material-symbols-rounded edit_panel_item_value_icon">
-						close
+						${completionStatus}
 					</span>
 				</button>
 			</div>
 			<div class="edit_panel_item">
 				<h3 class="edit_panel_item_title">Notes:</h3>
-				<textarea spellcheck="false" autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes"></textarea>
+				<textarea spellcheck="false" autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes" onchange="notesChanged()" ></textarea>
 			</div>
 		</div
 	`))
@@ -283,7 +289,13 @@ function completionChanged() {
 }
 
 function notesChanged(){
-	console.log("need to add this function")
+	let note = document.querySelector(`input.edit_panel_item_value`)
+	// currentTask.note = note.value
+	if(currentTask.note != activeList.tasks[currentTask.index].note){
+		note.classList.add("edit_panel_item_value_changed")
+	} else {
+		note.classList.remove("edit_panel_item_value_changed")
+	}
 }
 
 function closeTaskEdit(e) {
@@ -291,13 +303,16 @@ function closeTaskEdit(e) {
 	let name = currentTask.name
 	let severity = currentTask.severity
 	let completionStatus = currentTask.completionStatus
+	let note = currentTask.note
 	let index = currentTask.index
 	console.log("name: " + name)
 	console.log("severity: " + severity)
 	console.log("completionStatus: " + completionStatus)
 	console.log("index: " + index)
 
-	fetch(`http://127.0.0.1:8080?cmd=edls&cmd=task&cmd=${name}&cmd=${severity}&cmd=${completionStatus}&cmd=${index}&cmd=${activeFileName}`)
+	localStorage.setItem("activeTaskID", `task-${currentTask.name}`)
+
+	fetch(`http://127.0.0.1:8080?cmd=edls&cmd=task&cmd=${name}&cmd=${severity}&cmd=${completionStatus}&cmd=${note}&cmd=${index}&cmd=${activeFileName}`)
 	setTimeout(() => {console.log("hello")}, 3000)
 		// .then(res => {
 
@@ -310,6 +325,16 @@ function closeTaskEdit(e) {
 		// .then(data => {
 		// 	activeList = data.data1
 		// })
+}
+
+function popup(content) {
+	let body = document.querySelector("body")
+	let popupBase = elementFromHTML(`
+		
+	`)
+	let popupContent = elementFromHTML(content)
+	body.append(popupBase.append(popupContent))
+
 }
 
 function elementFromHTML(html) {
