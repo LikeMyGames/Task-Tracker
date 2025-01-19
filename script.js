@@ -186,7 +186,7 @@ function loadList(id) {
 }
 
 function createList() {
-    popup()
+    // popup()
 }
 
 function loadTask(id) {
@@ -235,7 +235,7 @@ function loadTask(id) {
 			<div class="edit_panel_item">
 				<h3 class="edit_panel_item_title">Completed?:</h3>
 				<button type="button" class="edit_panel_item_value" onclick="completionChanged()">
-					<span class="material-symbols-rounded edit_panel_item_value_icon">
+					<span class="material-symbols-rounded">
 						${completionStatus}
 					</span>
 				</button>
@@ -298,8 +298,7 @@ function notesChanged(){
 	}
 }
 
-function closeTaskEdit(e) {
-	e.preventDefault()
+function savecloseTaskEdit() {
 	let name = currentTask.name
 	let severity = currentTask.severity
 	let completionStatus = currentTask.completionStatus
@@ -313,28 +312,47 @@ function closeTaskEdit(e) {
 	localStorage.setItem("activeTaskID", `task-${currentTask.name}`)
 
 	fetch(`http://127.0.0.1:8080?cmd=edls&cmd=task&cmd=${name}&cmd=${severity}&cmd=${completionStatus}&cmd=${note}&cmd=${index}&cmd=${activeFileName}`)
-	setTimeout(() => {console.log("hello")}, 3000)
-		// .then(res => {
+		.then(res => {
 
-		// 	console.log(res)
-		// 	// if(!res.ok) {
-		// 	// 	throw new Error
-		// 	// }
-		// 	// return res.json()
-		// })
-		// .then(data => {
-		// 	activeList = data.data1
-		// })
+			console.log(res)
+			// if(!res.ok) {
+			// 	throw new Error
+			// }
+			// return res.json()
+		})
+		.then(data => {
+			activeList = data.data1
+		})
+}
+
+function closeTaskEdit() {
+	popup(``)
 }
 
 function popup(content) {
-	let body = document.querySelector("body")
-	let popupBase = elementFromHTML(`
-		
+	let popop = elementFromHTML(`
+		<div class="popup">
+			<div class="popup_action">
+				<button class="popup_action_close" onclick="() => {
+						console.log('removing popup')
+						document.querySelector('.popup').remove()
+					}">
+					<span class="material-symbols-rounded">
+						delete
+					</span>
+					<h3>
+						Discard
+					</h3>
+				</button>
+			</div>
+		</div>
 	`)
-	let popupContent = elementFromHTML(content)
-	body.append(popupBase.append(popupContent))
 
+
+
+
+	// let popup = document.querySelector("dialog.popup")
+	// popup.showModal()
 }
 
 function elementFromHTML(html) {

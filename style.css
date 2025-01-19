@@ -11,12 +11,13 @@
 
 * {
     box-sizing: border-box;
+    font-family: var(--main-font);
 }
 
 html, body {
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
+    overflow: auto;
 
     margin: 0px;
     background-color: var(--background-color);
@@ -64,6 +65,11 @@ h5 {
 small {
     font-size: 0.750rem; /* 12px */
     font-family: 'Pixelify Sans';
+    font-weight: 700;
+}
+
+.material-symbols-rounded {
+    font-size: 3.158rem;
     font-weight: 700;
 }
 
@@ -372,6 +378,11 @@ small {
 	color: var(--primary-color)
 }
 
+.edit_panel_item_value .material-symbols-rounded {
+    font-size: 3.158rem;
+    font-weight: 700;
+}
+
 textarea.edit_panel_item_value {
     resize:vertical;
     min-height: 150px;
@@ -438,6 +449,12 @@ select.edit_panel_item_value option {
 	align-items: center;
 }
 
+.edit_panel_close_button .material-symbols-rounded {
+    font-size: 3.158rem;
+    font-weight: 700;
+    margin-right: 10px;
+}
+
 .edit_panel_close_button {
 	width: 100%;
 	height: 100%;
@@ -455,6 +472,10 @@ select.edit_panel_item_value option {
 	transition: 250ms;
 }
 
+.edit_panel_close_button:last-child {
+    margin-left: 10px;
+}
+
 .edit_panel_close_button h3 {
 	font-size: 2.369rem;
 }
@@ -467,4 +488,52 @@ select.edit_panel_item_value option {
 .edit_panel_close_button span {
 	font-size: 3.158rem;
 	margin-right: 10px;
+}
+
+.popup {
+    position: absolute;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr minmax(200px, 5vw);
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 100vw;
+
+    /* padding: 50px; */
+
+    border: none;
+    outline: none;
+    background-color: var(--background-color);
+}
+
+.popup_action {
+    grid-row-end: -1;
+    grid-column-end: -1;
+    align-self: flex-end;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(300px, 5vw);
+    padding: 50px;
+}
+
+.popup_action_close {
+    grid-row-end: -1;
+    grid-column-end: -1;
+
+    width: 100%;
+	height: 100%;
+	border-radius: 15px;
+	border: none;
+	outline: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	background-color: var(--accent-color);
+	color: var(--primary-color);
+
+	font-size: 3.158rem;
+	transition: 250ms;
 }

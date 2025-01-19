@@ -205,7 +205,7 @@
 				</div> -->
             </div>
 			<div class="edit_panel_close">
-				<button type="button" class="edit_panel_close_button" onclick="closeTaskEdit(event)">
+				<button type="button" class="edit_panel_close_button" onclick="savecloseTaskEdit(event)">
 					<span class="material-symbols-rounded">
 						save
 					</span>
@@ -213,8 +213,40 @@
 						Save/Close
 					</h3>
 				</button>
+				<button type="button" class="edit_panel_close_button" onclick="closeTaskEdit()">
+					<span class="material-symbols-rounded">
+						delete
+					</span>
+					<h3>
+						Discard
+					</h3>
+				</button>
 			</div>
         </div>
     </div>
+	<div class="popup">
+		<div class="popup_action">
+			<button class="popup_action_close">
+				<span class="material-symbols-rounded">
+					delete
+				</span>
+				<h3>
+					Discard
+				</h3>
+			</button>
+		</div>
+	</div>
+	<!-- <dialog class="popup">
+		<form class="popup">
+			<button value="close" formmethod="dialog" class="popup_close">
+				<span class="material-symbols-rounded">
+					delete
+				</span>
+				<h3>
+					Discard
+				</h3>
+			</button>
+		</form>
+	</dialog> -->
 </body>
 </html>
