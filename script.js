@@ -87,11 +87,11 @@ function getLists() {
         	return res.json();
         })
 		.then(data => {
-            console.log(data.data1)
+            // console.log(data.data1)
 			let listContainer = document.querySelector(".list_menu_lists")
             for (let i = 0; i<data.data1.length; i++) {
                 listContainer.appendChild(elementFromHTML(`
-                    <button title="${data.data1[i]}" type="button" id="list-${data.data1[i]}" class="list_menu_list" onclick="loadList(this.id)">
+                    <button type="button" id="list-${data.data1[i]}" class="list_menu_list" onclick="loadList(this.id)">
                         <h3 class="list_menu_item_title">
                             ${data.data1[i]}
                         </h3>
@@ -109,12 +109,19 @@ function loadList(id) {
         button.classList.remove("list_menu_list_active")
     });
 
-    let button = document.querySelector(`.list_menu_list#${id}`)
+    let button = document.querySelector(`.list_menu_list[id="${id}"]`)
     button.classList.add("list_menu_list_active")
 
-    let listName = button.title
+    let listName = id.substring(5)
 	activeFileName = listName
 	localStorage.setItem("activeListID", id)
+	// localStorage.setItem("activeTaskID", null)
+	// currentTask = {
+	// 	"name": null,
+	// 	"severity": null,
+	// 	"completionStatus": null,
+	// 	"id": null
+	// }
 
     fetch(`http://127.0.0.1:8080/?cmd=opls&cmd=${listName}`)
     	.then(res => {
@@ -124,7 +131,7 @@ function loadList(id) {
         	return res.json();
         })
 		.then(data => {
-            console.log(data.data1)
+            // console.log(data.data1)
 			activeList = data.data1
 			localStorage.setItem("activeList", activeList)
             let listName = document.querySelector(".list_name")
@@ -136,7 +143,7 @@ function loadList(id) {
 				let name = data.data1.tasks[i].name
 				let taskNum = i+1
 				let importance = ""
-				console.log("Task " + (i+1) + ": " + data.data1.tasks[i].severity)
+				// console.log("Task " + (i+1) + ": " + data.data1.tasks[i].severity)
 				switch (data.data1.tasks[i].severity) {
 					case 1:
 						importance = "Very low"
@@ -189,7 +196,16 @@ function createList() {
     // popup()
 }
 
+function deleteList() {
+	console.log("deleting list")
+}
+
 function loadTask(id) {
+	console.log(id)
+	if(id == null || id == "null") {
+		console.log("task does not exist")
+		return
+	}
     let buttons = document.querySelectorAll(`.list_data_item`)
     buttons.forEach(button => {
         button.classList.remove("list_data_item_active")
@@ -214,39 +230,69 @@ function loadTask(id) {
 
 	localStorage.setItem("currentTask", currentTask)
 
-	let editAttributes = document.querySelector(".edit_panel_attributes")
-	editAttributes.innerHTML = ""
-	editAttributes.appendChild(elementFromHTML(`
-		<div>
-			<div class="edit_panel_item">
-				<h3 class="edit_panel_item_title">Name:</h3>
-				<input type="text" class="edit_panel_item_value" label="name_edit_input" placeholder="Name" value="${currentTask.name}" onchange="nameChanged()" autocomplete="none">
+	let editAttributes = document.querySelector(".edit_panel_replaceable")
+	console.log(editAttributes)
+	editAttributes.parentNode.replaceChild(elementFromHTML(`
+		<div class="edit_panel_replaceable">
+			<div class="edit_panel_attributes">
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Task Name:</h3>
+					<input name="task_name_input" type="text" class="edit_panel_item_value" placeholder="Task Name" value="${currentTask.name}" onchange="nameChanged()" autocomplete="none">
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Task Importance:</h3>
+					<select name="task_importance_selector" class="edit_panel_item_value" onchange="importanceChanged()">
+						<option value="1">Very low</option>
+						<option value="2">Low</option>
+						<option value="3">Medium</option>
+						<option value="4">High</option>
+						<option value="5">Very high</option>
+					</select>
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Task Completed?:</h3>
+					<button name="task_completionStatus_checkbox" type="button" class="edit_panel_item_value" onclick="completionChanged()">
+						<span class="material-symbols-rounded">
+							${completionStatus}
+						</span>
+					</button>
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Notes:</h3>
+					<textarea spellcheck="false" autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes" onchange="notesChanged()" ></textarea>
+				</div>
 			</div>
-			<div class="edit_panel_item">
-				<h3 class="edit_panel_item_title">Importance</h3>
-				<select name="task_importance_selector" class="edit_panel_item_value" title="importance_selector" onchange="importanceChanged()">
-					<option value="1">Very low</option>
-					<option value="2">Low</option>
-					<option value="3">Medium</option>
-					<option value="4">High</option>
-					<option value="5">Very high</option>
-				</select>
-			</div>
-			<div class="edit_panel_item">
-				<h3 class="edit_panel_item_title">Completed?:</h3>
-				<button type="button" class="edit_panel_item_value" onclick="completionChanged()">
+			<div class="edit_panel_close">
+				<button type="button" class="edit_panel_close_button special" onclick="savecloseTaskEdit(event)">
 					<span class="material-symbols-rounded">
-						${completionStatus}
+						save
 					</span>
+					<h3>
+						Save
+					</h3>
+				</button>
+				<button type="button" class="edit_panel_close_button special" onclick="closeTaskEdit()">
+					<span class="material-symbols-rounded">
+						cancel
+					</span>
+					<h3>
+						Cancel
+					</h3>
 				</button>
 			</div>
-			<div class="edit_panel_item">
-				<h3 class="edit_panel_item_title">Notes:</h3>
-				<textarea spellcheck="false" autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes" onchange="notesChanged()" ></textarea>
+			<div class="edit_panel_close">
+				<button type="button" class="edit_panel_close_button_single error" onclick="deleteList()">
+					<span class="material-symbols-rounded">
+						delete
+					</span>
+					<h3>
+						Delete Task
+					</h3>
+				</button>
 			</div>
-		</div
-	`))
-	editAttributes.querySelector(`option[value="${currentTask.severity}"]`).setAttribute('selected', 'true')
+		</div>
+	`), editAttributes)
+	document.querySelector(`.edit_panel_item_value > option[value="${currentTask.severity}"]`).setAttribute('selected', 'true')
 }
 
 function nameChanged() {
@@ -273,13 +319,15 @@ function importanceChanged() {
 function completionChanged() {
 	currentTask.completionStatus = !currentTask.completionStatus
 	let checkbox = document.querySelector(`.edit_panel_item_value[type="button"]`)
-	let check = document.querySelector(".edit_panel_item_value_icon")
+	let check = document.querySelector(".edit_panel_item_value span")
 
 	if(currentTask.completionStatus != activeList.tasks[currentTask.index].completionStatus) {
 		checkbox.classList.add("edit_panel_item_value_changed")
 	} else {
 		checkbox.classList.remove("edit_panel_item_value_changed")
 	}
+
+	console.log(currentTask.completionStatus)
 
 	if(currentTask.completionStatus) {
 		check.innerHTML = "check"
@@ -326,7 +374,76 @@ function savecloseTaskEdit() {
 }
 
 function closeTaskEdit() {
-	popup(``)
+	let changedItems = document.querySelectorAll(".edit_panel_item_value_changed")
+	changedItems.forEach((element) => {console.log(element.name)})
+	if(true){
+		currentTask = {
+			name: null,
+			severity: null,
+			completionStatus: null,
+			id: null
+		}
+		localStorage.setItem("activeTaskID", null)
+	}
+	let editAttributes = document.querySelector(".edit_panel_replaceable")
+	editAttributes.parentNode.replaceChild(elementFromHTML(`
+		<div class="edit_panel_replaceable">
+			<div class="edit_panel_attributes">
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">
+						List Name:
+					</h3>
+					<input type="text" class="edit_panel_item_value" placeholder="List Name" title="list_name_input" value="${activeList.name}">
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">
+						Search Tasks:
+					</h3>
+					<input type="search" class="edit_panel_item_value" placeholder="Task Name" title="task_search_input">
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">
+						Sort By:
+					</h3>
+					<select class="edit_panel_item_value" title="task_importance_selector" onchange="importanceChanged()">
+						<option value="1">Name</option>
+						<option value="2" selected>Task #</option>
+						<option value="3">Importance</option>
+						<option value="4">Completion</option>
+					</select>
+				</div>
+			</div>
+			<div class="edit_panel_close">
+				<button type="button" class="edit_panel_close_button special">
+					<span class="material-symbols-rounded">
+						add_circle
+					</span>
+					<h3>
+						Task
+					</h3>
+				</button>
+				<button type="button" class="edit_panel_close_button special">
+					<span class="material-symbols-rounded">
+						cancel
+					</span>
+					<h3>
+						Close
+					</h3>
+				</button>
+			</div>
+			<div class="edit_panel_close">
+				<button type="button" class="edit_panel_close_button_single error" onclick="deleteList()">
+					<span class="material-symbols-rounded">
+						delete
+					</span>
+					<h3>
+						Delete List
+					</h3>
+				</button>
+			</div>
+		</div>
+	`), editAttributes)
+	// popup(``)
 }
 
 function popup(content) {

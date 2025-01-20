@@ -42,7 +42,7 @@
 					</h3>
 				</button> -->
 			</div>
-			<button type="button" class="list_menu_add" onclick="createList()">
+			<button type="button" class="list_menu_add special" onclick="createList()">
 				<span class="material-symbols-rounded">
 					add_circle
 				</span>
@@ -176,55 +176,64 @@
             <h2 class="properties">
 				Properties
             </h2>
-            <div class="edit_panel_attributes">
-				<!-- <div class="edit_panel_item">
-					<h3 class="edit_panel_item_title">Name:</h3>
-					<input type="text" class="edit_panel_item_value" label="name_edit_input" placeholder="Name">
+			<div class="edit_panel_replaceable">
+				<div class="edit_panel_attributes">
+					<div class="edit_panel_item">
+						<h3 class="edit_panel_item_title">
+							List Name:
+						</h3>
+						<input type="text" class="edit_panel_item_value" placeholder="List Name" title="list_name_input">
+					</div>
+					<div class="edit_panel_item">
+						<h3 class="edit_panel_item_title">
+							Search Tasks:
+						</h3>
+						<input type="search" class="edit_panel_item_value" placeholder="Task Name" title="task_search_input">
+					</div>
+					<div class="edit_panel_item">
+						<h3 class="edit_panel_item_title">
+							Sort By:
+						</h3>
+						<select class="edit_panel_item_value" title="task_importance_selector" onchange="importanceChanged()">
+							<option value="1">Name</option>
+							<option value="2" selected>Task #</option>
+							<option value="3">Importance</option>
+							<option value="4">Completion</option>
+						</select>
+					</div>
 				</div>
-				<div class="edit_panel_item">
-					<h3 class="edit_panel_item_title">Importance</h3>
-					<select name="task_importance_selector" class="edit_panel_item_value" title="importance_selector" onchange="importanceChanged()">
-						<option value="1">Very low</option>
-						<option value="2">Low</option>
-						<option value="3" selected>Medium</option>
-						<option value="4">High</option>
-						<option value="5">Very high</option>
-					</select>
-				</div>
-				<div class="edit_panel_item">
-					<h3 class="edit_panel_item_title">Completed?:</h3>
-					<button type="button" class="edit_panel_item_value" onclick="completionChanged()">
-						<span class="material-symbols-rounded edit_panel_item_value_icon">
-							close
+				<div class="edit_panel_close">
+					<button type="button" class="edit_panel_close_button special">
+						<span class="material-symbols-rounded">
+							add_circle
 						</span>
+						<h3>
+							Task
+						</h3>
+					</button>
+					<button type="button" class="edit_panel_close_button special">
+						<span class="material-symbols-rounded">
+							cancel
+						</span>
+						<h3>
+							Close
+						</h3>
 					</button>
 				</div>
-				<div class="edit_panel_item">
-					<h3 class="edit_panel_item_title">Notes:</h3>
-					<textarea spellcheck="false" autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes"></textarea>
-				</div> -->
-            </div>
-			<div class="edit_panel_close">
-				<button type="button" class="edit_panel_close_button" onclick="savecloseTaskEdit(event)">
-					<span class="material-symbols-rounded">
-						save
-					</span>
-					<h3>
-						Save/Close
-					</h3>
-				</button>
-				<button type="button" class="edit_panel_close_button" onclick="closeTaskEdit()">
-					<span class="material-symbols-rounded">
-						delete
-					</span>
-					<h3>
-						Discard
-					</h3>
-				</button>
+				<div class="edit_panel_close">
+					<button type="button" class="edit_panel_close_button_single error" onclick="deleteList()">
+						<span class="material-symbols-rounded">
+							delete
+						</span>
+						<h3>
+							Delete List
+						</h3>
+					</button>
+				</div>
 			</div>
         </div>
     </div>
-	<div class="popup">
+	<!-- <div class="popup">
 		<div class="popup_action">
 			<button class="popup_action_close">
 				<span class="material-symbols-rounded">
@@ -235,18 +244,6 @@
 				</h3>
 			</button>
 		</div>
-	</div>
-	<!-- <dialog class="popup">
-		<form class="popup">
-			<button value="close" formmethod="dialog" class="popup_close">
-				<span class="material-symbols-rounded">
-					delete
-				</span>
-				<h3>
-					Discard
-				</h3>
-			</button>
-		</form>
-	</dialog> -->
+	</div> -->
 </body>
 </html>

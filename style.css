@@ -6,6 +6,9 @@
     --primary-color: #373737;
     --secondary-color: #1c1c1c;
     --accent-color: #92ff5c;
+    --note-color: #5cb2ff;
+    --warning-color: #ffec5c;
+    --error-color: #ff5c5c;
     --text-color: #eaf1ec;
 }
 
@@ -17,7 +20,7 @@
 html, body {
     width: 100vw;
     height: 100vh;
-    overflow: auto;
+    overflow: none;
 
     margin: 0px;
     background-color: var(--background-color);
@@ -73,6 +76,54 @@ small {
     font-weight: 700;
 }
 
+button, input, select, textarea {
+    transform: none;
+    filter: none;
+    transition: 250ms;
+}
+
+button:hover, input:hover, select:hover, textarea:hover {
+    transform: translate(-5px, -5px);
+    filter: drop-shadow(5px 5px var(--accent-color));
+}
+
+button:active, input:active, select:active, textarea:active {
+    transform: translate(-2.5px, -2.5px);
+    filter: drop-shadow(2.5px 2.5px var(--accent-color))
+}
+
+input:focus, select:focus, textarea:focus {
+    transform: none;
+    filter: none;
+}
+
+.error {
+    background-color: var(--error-color);
+    color: var(--primary-color)
+}
+
+.error:hover {
+    background-color: var(--primary-color);
+	color: var(--error-color);
+    filter: drop-shadow(5px 5px var(--error-color));
+}
+
+.special {
+    background-color: var(--accent-color);
+    color: var(--primary-color)
+}
+
+.normal {
+    background-color: var(--primary-color);
+    color: var(--text-color)
+}
+
+.special:hover, .normal:hover {
+    background-color: var(--primary-color);
+	color: var(--accent-color);
+    filter: drop-shadow(5px 5px var(--accent-color));
+}
+
 .main {
     width: 100vw;
     height: 100vh;
@@ -89,6 +140,7 @@ small {
     padding:30px;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 
     background-color: var(--background-color);
     filter: drop-shadow(0px 0px 10px black)
@@ -143,6 +195,15 @@ small {
     background-color: var(--accent-color);
 }
 
+.list_menu_list_active:hover {
+    background-color: var(--primary-color);
+	color: var(--accent-color);
+}
+
+.list_menu_list_active:hover > h3 {
+    color: var(--accent-color);
+}
+
 .list_menu_item_title {
     margin: 0px;
 }
@@ -151,7 +212,7 @@ small {
     color: var(--accent-color);   
 }
 
-.list_menu_list_active .list_menu_item_title {
+.list_menu_list_active > .list_menu_item_title {
     color: var(--primary-color);
 }
 
@@ -164,23 +225,21 @@ small {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--primary-color);
-    background-color: var(--accent-color);
+    /* color: var(--primary-color);
+    background-color: var(--accent-color); */
     transition: 250ms;
 }
-
+/* 
 .list_menu_add:hover {
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     color: var(--accent-color);
 }
 
 .list_menu_add:active {
     background-color: var(--primary-color);
-}
+} */
 
-.list_menu_add .material-symbols-rounded {
-    font-size: 3.158rem;
-    font-weight: 700;
+.list_menu_add > .material-symbols-rounded {
     margin-right: 10px;
 }
 
@@ -216,6 +275,7 @@ small {
     width: 100%;
     height: auto;
     overflow-x: hidden;
+    overflow-y: auto;
     border-radius: 35px;
     background-color: var(--secondary-color);
 }
@@ -245,10 +305,15 @@ small {
 }
 
 .list_data_item_active:hover {
-    background-color: var(--accent-color);
+    background-color: var(--primary-color);
+    color: var(--accent-color);
 }
 
-.list_data_item_active, .list_data_item:active {
+.list_data_item_active:hover > .list_data_item_title, .list_data_item_active:hover > .list_data_item_attribute {
+    color: var(--accent-color)
+}
+
+.list_data_item_active {
     background-color: var(--accent-color);
 }
 
@@ -259,15 +324,7 @@ small {
     transition: 250ms;
 }
 
-.list_data_item:hover .list_data_item_title {
-    color: var(--accent-color);
-}
-
-.list_data_item_active .list_data_item_title, .list_data_item:active .list_data_item_title {
-    color: var(--primary-color);
-}
-
-.list_data_item_active:hover .list_data_item_title {
+.list_data_item_active > .list_data_item_title, .list_data_item:active > .list_data_item_title {
     color: var(--primary-color);
 }
 
@@ -279,16 +336,16 @@ small {
     transition: 250ms;
 }
 
-.list_data_item:hover .list_data_item_attributes {
+.list_data_item:hover > .list_data_item_attributes, .list_data_item:hover > .list_data_item_title {
     color: var(--accent-color);
 }
 
-.list_data_item_active .list_data_item_attributes, .list_data_item:active .list_data_item_attributes {
+.list_data_item_active > .list_data_item_attributes, .list_data_item:active > .list_data_item_attributes {
     color: var(--primary-color);
 }
 
-.list_data_item_active:hover .list_data_item_attributes {
-    color: var(--primary-color);
+.list_data_item_active:hover > .list_data_item_attributes {
+    color: var(--accent-color);
 }
 
 .list_data_item_attribute {
@@ -297,7 +354,7 @@ small {
     display: flex;
 }
 
-.list_data_item_attribute p {
+.list_data_item_attribute > p {
     margin: 0px;
     margin-right: 10px;
     font-size: 1.333rem
@@ -310,6 +367,7 @@ small {
     padding:40px;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 
     background-color: var(--background-color);
     filter: drop-shadow(0px 0px 10px black)
@@ -331,7 +389,7 @@ small {
 
 .edit_panel_attributes {
     width: 100%;
-    min-height: 150px;
+    /* min-height: 150px; */
     display: flex;
     flex-direction: column;
     border-radius: 25px;
@@ -378,7 +436,7 @@ small {
 	color: var(--primary-color)
 }
 
-.edit_panel_item_value .material-symbols-rounded {
+.edit_panel_item_value > .material-symbols-rounded {
     font-size: 3.158rem;
     font-weight: 700;
 }
@@ -401,7 +459,7 @@ button.edit_panel_item_value {
 	/* background-color: var(--background-color); */
 }
 
-button.edit_panel_item_value span {
+button.edit_panel_item_value > span {
 	color: var(--text-color);
 	font-size: 3.158rem;
 	font-variation-settings:
@@ -409,7 +467,7 @@ button.edit_panel_item_value span {
 	transition: 250ms;
 }
 
-button.edit_panel_item_value:hover span {
+button.edit_panel_item_value:hover > span {
 	color: var(--accent-color);
 	font-size: 3.158rem;
 }
@@ -419,11 +477,15 @@ button.edit_panel_item_value:hover span {
 	color: var(--secondary-color)
 }
 
-button.edit_panel_item_value_changed span {
+.edit_panel_item_value_changed:hover {
+    filter: drop-shadow(5px 5px var(--secondary-color))
+}
+
+button.edit_panel_item_value_changed > span {
 	color: var(--secondary-color);
 }
 
-button.edit_panel_item_value_changed:hover span{
+button.edit_panel_item_value_changed:hover > span{
 	color: var(--primary-color);
 }
 
@@ -431,7 +493,7 @@ select.edit_panel_item_value {
 	transition: 250ms;
 }
 
-select.edit_panel_item_value option {
+select.edit_panel_item_value > option {
 	background-color: var(--secondary-color);
 	color: var(--text-color);
 	transition: 250ms;
@@ -449,7 +511,8 @@ select.edit_panel_item_value option {
 	align-items: center;
 }
 
-.edit_panel_close_button .material-symbols-rounded {
+
+.edit_panel_close_button > .material-symbols-rounded {
     font-size: 3.158rem;
     font-weight: 700;
     margin-right: 10px;
@@ -464,9 +527,20 @@ select.edit_panel_item_value option {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	
-	background-color: var(--accent-color);
-	color: var(--primary-color);
+
+	font-size: 3.158rem;
+	transition: 250ms;
+}
+
+.edit_panel_close_button_single {
+	width: 100%;
+	height: 100%;
+	border-radius: 15px;
+	border: none;
+	outline: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	font-size: 3.158rem;
 	transition: 250ms;
@@ -476,7 +550,7 @@ select.edit_panel_item_value option {
     margin-left: 10px;
 }
 
-.edit_panel_close_button h3 {
+.edit_panel_close_button > h3 {
 	font-size: 2.369rem;
 }
 
@@ -485,7 +559,7 @@ select.edit_panel_item_value option {
 	color: var(--accent-color);
 }
 
-.edit_panel_close_button span {
+.edit_panel_close_button > span {
 	font-size: 3.158rem;
 	margin-right: 10px;
 }
@@ -510,30 +584,40 @@ select.edit_panel_item_value option {
 .popup_action {
     grid-row-end: -1;
     grid-column-end: -1;
-    align-self: flex-end;
+    
     height: 100%;
     width: 100%;
-    display: grid;
-    grid-template-columns: minmax(300px, 5vw);
+    display: flex;
+
+    align-items: center;
     padding: 50px;
+
+    
+    
 }
 
-.popup_action_close {
-    grid-row-end: -1;
-    grid-column-end: -1;
+/* .popup_action_close:hover {
+    transform: translate(-5px, -5px);
+    filter: drop-shadow(5px 5px var(--primary-color));
+} */
 
-    width: 100%;
-	height: 100%;
-	border-radius: 15px;
+.popup_action_close {
+    border-radius: 15px;
 	border: none;
 	outline: none;
 	display: flex;
+    justify-self: flex-end;
 	justify-content: center;
 	align-items: center;
+    padding: 25px;
 	
 	background-color: var(--accent-color);
 	color: var(--primary-color);
 
 	font-size: 3.158rem;
 	transition: 250ms;
+}
+
+.popup_action_close > h3 {
+    margin: 0px;
 }
