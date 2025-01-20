@@ -43,6 +43,8 @@ var currentTask = {
 	"id": null
 }
 
+var searchString = ""
+
 window.onload = ( function(){
 	getLists();
 	setTimeout(() => {
@@ -135,7 +137,7 @@ function loadList(id) {
 			activeList = data.data1
 			localStorage.setItem("activeList", activeList)
             let listName = document.querySelector(".list_name")
-            listName.textContent = data.data1.name
+            listName.textContent = activeList.name
 
             let taskContainer = document.querySelector(".list_data")
 			taskContainer.innerHTML = ""
@@ -188,6 +190,64 @@ function loadList(id) {
 						</ul>
                 	</button>
                 `))
+				let editAttributes = document.querySelector(".edit_panel_replaceable")
+				editAttributes.parentNode.replaceChild(elementFromHTML(`
+					<div class="edit_panel_replaceable">
+						<div class="edit_panel_attributes">
+							<div class="edit_panel_item">
+								<h3 class="edit_panel_item_title">
+									List Name:
+								</h3>
+								<input type="text" class="edit_panel_item_value" placeholder="List Name" title="list_name_input" value="${activeList.name}">
+							</div>
+							<div class="edit_panel_item">
+								<h3 class="edit_panel_item_title">
+									Search Tasks:
+								</h3>
+								<input type="search" class="edit_panel_item_value" placeholder="Task Name" title="task_search_input" onclick="startSearchListener()" onchange="">
+							</div>
+							<div class="edit_panel_item">
+								<h3 class="edit_panel_item_title">
+									Sort By:
+								</h3>
+								<select class="edit_panel_item_value" title="task_importance_selector" onchange="importanceChanged()">
+									<option value="1">Name</option>
+									<option value="2" selected>Task #</option>
+									<option value="3">Importance</option>
+									<option value="4">Completion</option>
+								</select>
+							</div>
+						</div>
+						<div class="edit_panel_close">
+							<button type="button" class="edit_panel_close_button special">
+								<span class="material-symbols-rounded">
+									add_circle
+								</span>
+								<h3>
+									Task
+								</h3>
+							</button>
+							<button type="button" class="edit_panel_close_button special">
+								<span class="material-symbols-rounded">
+									cancel
+								</span>
+								<h3>
+									Close
+								</h3>
+							</button>
+						</div>
+						<div class="edit_panel_close">
+							<button type="button" class="edit_panel_close_button_single error" onclick="deleteList()">
+								<span class="material-symbols-rounded">
+									delete
+								</span>
+								<h3>
+									Delete List
+								</h3>
+							</button>
+						</div>
+					</div>
+				`), editAttributes)
             }
 		})
 }
@@ -198,6 +258,42 @@ function createList() {
 
 function deleteList() {
 	console.log("deleting list")
+}
+
+function startSearchListener() {
+	let input = document.querySelector(`input.edit_panel_item_value[type="search"]`)
+	input.addEventListener("keydown", (e) => {
+		// e.preventDefault()
+		// console.log(e.key)
+		if(e.key.length == 1){
+			searchString += e.key
+		} else {
+			if(e.key == "Backspace"){
+				searchString = searchString.substring(0, searchString.length-1)
+			} else if(e.key == "Enter") {
+				input.removeEventListener("keydown", (e) => {
+					// e.preventDefault()
+					// console.log(e.key)
+					if(e.key.length == 1){
+						searchString += e.key
+					} else {
+						if(e.key == "Backspace"){
+							searchString = searchString.substring(0, searchString.length-1)
+						} else if(e.key == "Enter") {
+							input.removeEventListener("keydown")
+						}
+					}
+					console.log(searchString)
+				})
+			}
+		}
+		console.log(searchString)
+	})
+}
+
+function setSearchString() {
+	let input = document.querySelector(`input.edit_panel_item_value[type="search"]`)
+	searchString = input.value
 }
 
 function loadTask(id) {
@@ -237,11 +333,11 @@ function loadTask(id) {
 			<div class="edit_panel_attributes">
 				<div class="edit_panel_item">
 					<h3 class="edit_panel_item_title">Task Name:</h3>
-					<input name="task_name_input" type="text" class="edit_panel_item_value" placeholder="Task Name" value="${currentTask.name}" onchange="nameChanged()" autocomplete="none">
+					<input name="task_name_input" type="text" class="edit_panel_item_value" placeholder="Task Name" value="${currentTask.name}" onchange="taskNameChanged()" autocomplete="none">
 				</div>
 				<div class="edit_panel_item">
 					<h3 class="edit_panel_item_title">Task Importance:</h3>
-					<select name="task_importance_selector" class="edit_panel_item_value" onchange="importanceChanged()">
+					<select name="task_importance_selector" class="edit_panel_item_value" onchange="taskImportanceChanged()">
 						<option value="1">Very low</option>
 						<option value="2">Low</option>
 						<option value="3">Medium</option>
@@ -251,7 +347,7 @@ function loadTask(id) {
 				</div>
 				<div class="edit_panel_item">
 					<h3 class="edit_panel_item_title">Task Completed?:</h3>
-					<button name="task_completionStatus_checkbox" type="button" class="edit_panel_item_value" onclick="completionChanged()">
+					<button name="task_completionStatus_checkbox" type="button" class="edit_panel_item_value" onclick="taskCompletionChanged()">
 						<span class="material-symbols-rounded">
 							${completionStatus}
 						</span>
@@ -259,7 +355,7 @@ function loadTask(id) {
 				</div>
 				<div class="edit_panel_item">
 					<h3 class="edit_panel_item_title">Notes:</h3>
-					<textarea spellcheck="false" autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes" onchange="notesChanged()" ></textarea>
+					<textarea spellcheck="false" autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes" onchange="taskNotesChanged()" ></textarea>
 				</div>
 			</div>
 			<div class="edit_panel_close">
@@ -295,7 +391,7 @@ function loadTask(id) {
 	document.querySelector(`.edit_panel_item_value > option[value="${currentTask.severity}"]`).setAttribute('selected', 'true')
 }
 
-function nameChanged() {
+function taskNameChanged() {
 	let name = document.querySelector(`input.edit_panel_item_value`)
 	currentTask.name = name.value
 	if(currentTask.name != activeList.tasks[currentTask.index].name){
@@ -305,7 +401,7 @@ function nameChanged() {
 	}
 }
 
-function importanceChanged() {
+function taskImportanceChanged() {
 	console.log(activeList.tasks[currentTask.index]) 
 	let selector = document.querySelector(`select.edit_panel_item_value`)
 	currentTask.severity = selector.value
@@ -316,7 +412,7 @@ function importanceChanged() {
 	}
 }
 
-function completionChanged() {
+function taskCompletionChanged() {
 	currentTask.completionStatus = !currentTask.completionStatus
 	let checkbox = document.querySelector(`.edit_panel_item_value[type="button"]`)
 	let check = document.querySelector(".edit_panel_item_value span")
@@ -336,7 +432,7 @@ function completionChanged() {
 	}
 }
 
-function notesChanged(){
+function taskNotesChanged(){
 	let note = document.querySelector(`input.edit_panel_item_value`)
 	// currentTask.note = note.value
 	if(currentTask.note != activeList.tasks[currentTask.index].note){
@@ -399,7 +495,7 @@ function closeTaskEdit() {
 					<h3 class="edit_panel_item_title">
 						Search Tasks:
 					</h3>
-					<input type="search" class="edit_panel_item_value" placeholder="Task Name" title="task_search_input">
+					<input type="search" class="edit_panel_item_value" placeholder="Task Name" title="task_search_input" onclick="startSearchListener()">
 				</div>
 				<div class="edit_panel_item">
 					<h3 class="edit_panel_item_title">
