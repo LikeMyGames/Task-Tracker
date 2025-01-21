@@ -14,6 +14,9 @@ func main() {
 		DeleteCompletedTasks:   true,
 		SortAttribute:          "task #",
 	}
+	dir, _ := TaskManager.RunCommand(config, []string{"wd"}...)
+	log.Println(dir)
+	config.ListDirectory = dir.(string) + "/Lists/"
 	// Hello world, the web server
 	handler := func(w http.ResponseWriter, req *http.Request) {
 		queryParams := req.URL.Query()

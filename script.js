@@ -140,7 +140,21 @@ function loadList(id) {
             listName.textContent = activeList.name
 
             let taskContainer = document.querySelector(".list_data")
-			taskContainer.innerHTML = ""
+			if(taskContainer == null){
+				taskContainer = document.querySelector(".list_replaceable")
+				taskContainer.appendChild(elementFromHTML(`
+					<div class="list_data">
+					</div>	
+				`))
+			} else if(taskContainer != null) {
+				taskContainer.parentNode.replaceChild(elementFromHTML(`
+					<div class="list_data">
+					</div>	
+				`), taskContainer)
+			}
+
+			taskContainer = document.querySelector(".list_data")
+
             for (let i = 0; i<data.data1.tasks.length; i++) {
 				let name = data.data1.tasks[i].name
 				let taskNum = i+1
@@ -258,6 +272,29 @@ function createList() {
 
 function deleteList() {
 	console.log("deleting list")
+
+	let listData = document.querySelector(".list_replaceable")
+	console.log(listData.classList[0])
+	listData.parentNode.replaceChild(elementFromHTML(`
+		<div class="list_replaceable">
+		</div>
+	`), listData)
+	let listAttributes = document.querySelector(".edit_panel_replaceable")
+	console.log(listAttributes.classList[0])
+	listAttributes.parentNode.replaceChild(elementFromHTML(`
+		<div class="edit_panel_replaceable">
+		</div>
+	`), listAttributes)
+	fetch(`http://localhost:8080?cmd=dells&cmd=${activeFileName}`)
+		.then((res) => {
+			if(!res.ok) {
+				throw new Error("Response not OK")
+			}
+			return res.json()
+		})
+		.then((data) => {
+			console.log(data)
+		})
 }
 
 function startSearchListener() {
@@ -473,12 +510,14 @@ function closeTaskEdit() {
 	let changedItems = document.querySelectorAll(".edit_panel_item_value_changed")
 	changedItems.forEach((element) => {console.log(element.name)})
 	if(true){
+		document.querySelector(`.list_data_item_active`).classList.remove("list_data_item_active")
 		currentTask = {
 			name: null,
 			severity: null,
 			completionStatus: null,
 			id: null
 		}
+		
 		localStorage.setItem("activeTaskID", null)
 	}
 	let editAttributes = document.querySelector(".edit_panel_replaceable")
@@ -540,6 +579,10 @@ function closeTaskEdit() {
 		</div>
 	`), editAttributes)
 	// popup(``)
+}
+
+function deleteTask() {
+
 }
 
 function popup(content) {

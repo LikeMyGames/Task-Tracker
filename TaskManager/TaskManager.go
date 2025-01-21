@@ -473,7 +473,9 @@ func EditListTask(config Config, args ...string) TaskList {
 }
 
 func Dells(args ...string) (string, any) {
-	if activeFileName == "" {
+	if len(args) == 1 {
+		activeFileName = args[0]
+	} else if activeFileName == "" {
 		fmt.Println("No list file open: A Task Manager list file must be opened for this command to function properly")
 		return "", nil
 	} else if len(args) > 1 {
@@ -485,23 +487,25 @@ func Dells(args ...string) (string, any) {
 		args = append(args, scanner.Text())
 	}
 
-	currentFileName := activeFileName
-	currentList := activeList
-	saveActiveListToJSON()
+	// currentFileName := activeFileName
+	// currentList := activeList
+	// saveActiveListToJSON()
 
-	Opls(configData, []string{"opls", args[0]}...)
-	Opls(configData, []string{"opls", strings.Trim(currentFileName, ".json")}...)
+	// Opls(configData, []string{"opls", args[0]}...)
+	// Opls(configData, []string{"opls", strings.Trim(currentFileName, ".json")}...)
 
-	if currentList.Name == activeList.Name {
-		err := os.Remove(args[0] + ".json")
-		if err != nil {
-			log.Fatal(err)
-			return "", nil
-		}
-	} else {
-		log.Fatal("File validation failed somewhere. You might have tryed to delete a file that wasn't a list file for the program.")
-		os.Exit(1)
+	err := os.Remove(args[0] + ".json")
+	if err != nil {
+		log.Fatal(err)
+		return "", nil
 	}
+
+	// if currentList.Name == activeList.Name {
+
+	// } else {
+	// 	log.Fatal("File validation failed somewhere. You might have tryed to delete a file that wasn't a list file for the program.")
+	// 	os.Exit(1)
+	// }
 	return args[0], nil
 }
 
@@ -562,18 +566,19 @@ func Lsls(config Config) ([]string, any) {
 	return outStr, nil
 }
 
-func Cdls(args ...string) (string, string) {
-	oldDir := configData.ListDirectory
-	if len(args) == 1 {
-		fmt.Println(configData.ListDirectory)
-	} else if len(args) == 2 {
-		fmt.Println("Old List Directory: ", configData.ListDirectory)
-		configData.ListDirectory = args[1]
-		fmt.Println("New List Directory: ", configData.ListDirectory)
+func Cdls(config Config, args ...string) (string, string) {
+	oldDir := config.ListDirectory
+	if len(args) == 0 {
+		fmt.Println(config.ListDirectory)
+		return config.ListDirectory, ""
+	} else if len(args) == 1 {
+		fmt.Println("Old List Directory: ", config.ListDirectory)
+		config.ListDirectory = args[1]
+		fmt.Println("New List Directory: ", config.ListDirectory)
 	} else {
 		fmt.Println("Incorrect Format: \"cdls\" command has the following format: \"cdls\" <optional-new-directory-path>\". Where \"<optional-new-directory-path>\" is the directory where lists get stored and accessed. The path must be an absolute filename (starts from the root of the drive ex: \"C:/Projects/VSCode/TaskManager/Lists/)\"")
 	}
-	return oldDir, configData.ListDirectory
+	return oldDir, config.ListDirectory
 }
 
 func Edconf(args ...string) (Config, any) {
@@ -658,11 +663,13 @@ func RunCommand(config Config, word ...string) (any, any) {
 	case "lsls":
 		return Lsls(config)
 	case "cdls":
-		return Cdls(word...)
+		return Cdls(config, word[1:]...)
 	case "edconf":
 		return Edconf(word...)
 	case "end":
 		os.Exit(0)
+	case "wd":
+		return getCurWD(), nil
 	default:
 		return "That is not a valid command. To see a list of all valid commands and their actions, use the \"help\" command.", nil
 	}
@@ -743,4 +750,15 @@ func saveConfigtoJson() {
 		log.Fatal(err)
 		return
 	}
+}
+
+func getCurWD() string {
+	str, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+		return ""
+	}
+	// log.Println(str)
+	str = strings.ReplaceAll(str, "\\", "/")
+	return str
 }
