@@ -299,33 +299,17 @@ function deleteList() {
 
 function startSearchListener() {
 	let input = document.querySelector(`input.edit_panel_item_value[type="search"]`)
-	input.addEventListener("keydown", (e) => {
-		// e.preventDefault()
-		// console.log(e.key)
-		if(e.key.length == 1){
-			searchString += e.key
-		} else {
-			if(e.key == "Backspace"){
-				searchString = searchString.substring(0, searchString.length-1)
-			} else if(e.key == "Enter") {
-				input.removeEventListener("keydown", (e) => {
-					// e.preventDefault()
-					// console.log(e.key)
-					if(e.key.length == 1){
-						searchString += e.key
-					} else {
-						if(e.key == "Backspace"){
-							searchString = searchString.substring(0, searchString.length-1)
-						} else if(e.key == "Enter") {
-							input.removeEventListener("keydown")
-						}
-					}
-					console.log(searchString)
-				})
-			}
-		}
-		console.log(searchString)
-	})
+	// console.log(getEventListeners(input))
+	input.removeEventListener("keydown", (e) => searchListener(e, input))
+	input.addEventListener("keydown", (e) => searchListener(e, input))
+}
+
+function searchListener(e, input) {
+	searchString = input.value
+	console.log(searchString)
+	if(e.key == "Enter"){
+		input.removeEventListener("keydown", this)
+	}
 }
 
 function setSearchString() {
