@@ -15,7 +15,7 @@ func main() {
 		SortAttribute:          "task #",
 	}
 	dir, _ := TaskManager.RunCommand(config, []string{"wd"}...)
-	config.ListDirectory = dir.(string) + "/"
+	config.ListDirectory = dir.(string) + "/Lists/"
 	log.Println(config.ListDirectory)
 
 	// Hello world, the web server

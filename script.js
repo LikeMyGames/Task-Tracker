@@ -45,6 +45,10 @@ var currentTask = {
 
 var searchString = ""
 
+var apiBaseURI = "https://zany-space-enigma-jv56wrqjjw4f4g6-8080.app.github.dev/"
+// https://zany-space-enigma-jv56wrqjjw4f4g6-8080.app.github.dev/ (when working on chromebook)
+// localhost:8080 (when working anywhere else)
+
 window.onload = ( function(){
 	getLists();
 	setTimeout(() => {
@@ -81,7 +85,7 @@ function useLocalStorage() {
 // }
 
 function getLists() {
-    fetch("http://127.0.0.1:8080/?cmd=lsls")
+    fetch(`${apiBaseURI}/?cmd=lsls`)
     	.then(res => {
         	if(!res.ok){
        		 	throw new Error();
@@ -125,7 +129,7 @@ function loadList(id) {
 	// 	"id": null
 	// }
 
-    fetch(`http://127.0.0.1:8080/?cmd=opls&cmd=${listName}`)
+    fetch(`${apiBaseURI}/?cmd=opls&cmd=${listName}`)
     	.then(res => {
         	if(!res.ok){
        		 	throw new Error();
@@ -320,7 +324,7 @@ function createList() {
 
 function confirmListCreate() {
 	let listName = document.querySelector(`.edit_panel_item_value[title="list_name_input"]`).value
-	fetch(`http://localhost:8080?cmd=mkls&cmd=${listName}`)
+	fetch(`${apiBaseURI}?cmd=mkls&cmd=${listName}`)
 		.then((res) => {
 			if(!res.ok) {
 				throw new Error("Could not create list")
@@ -350,7 +354,7 @@ function deleteList() {
 		<div class="edit_panel_replaceable">
 		</div>
 	`), listAttributes)
-	fetch(`http://localhost:8080?cmd=dells&cmd=${activeFileName}`)
+	fetch(`${apiBaseURI}?cmd=dells&cmd=${activeFileName}`)
 		.then((res) => {
 			if(!res.ok) {
 				throw new Error("Response not OK")
@@ -541,7 +545,7 @@ function savecloseTaskEdit() {
 
 	localStorage.setItem("activeTaskID", `task-${currentTask.name}`)
 
-	fetch(`http://127.0.0.1:8080?cmd=edls&cmd=task&cmd=${name}&cmd=${severity}&cmd=${completionStatus}&cmd=${note}&cmd=${index}&cmd=${activeFileName}`)
+	fetch(`${apiBaseURI}?cmd=edls&cmd=task&cmd=${name}&cmd=${severity}&cmd=${completionStatus}&cmd=${note}&cmd=${index}&cmd=${activeFileName}`)
 		.then(res => {
 
 			console.log(res)
@@ -683,7 +687,7 @@ function confirmTaskCreate() {
 	console.log("Task Name: " + name)
 	console.log("Task Severity: " + severity)
 	console.log("Task Note: " + note)
-	fetch(`http://localhost:8080?cmd=mktk&cmd=${name}&cmd=${severity}&cmd=${note}`)
+	fetch(`${apiBaseURI}?cmd=mktk&cmd=${name}&cmd=${severity}&cmd=${note}`)
 		.then((res) => {
 			if(!res.ok) {
 				throw new Error("Could not create new task")
