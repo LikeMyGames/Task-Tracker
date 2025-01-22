@@ -133,7 +133,6 @@ function loadList(id) {
         	return res.json();
         })
 		.then(data => {
-            // console.log(data.data1)
 			activeList = data.data1
 			localStorage.setItem("activeList", activeList)
             let listName = document.querySelector(".list_name")
@@ -152,6 +151,65 @@ function loadList(id) {
 					</div>	
 				`), taskContainer)
 			}
+
+			let editAttributes = document.querySelector(".edit_panel_replaceable")
+			editAttributes.parentNode.replaceChild(elementFromHTML(`
+				<div class="edit_panel_replaceable">
+					<div class="edit_panel_attributes">
+						<div class="edit_panel_item">
+							<h3 class="edit_panel_item_title">
+								List Name:
+							</h3>
+							<input type="text" class="edit_panel_item_value" placeholder="List Name" title="list_name_input" value="${activeList.name}">
+						</div>
+						<div class="edit_panel_item">
+							<h3 class="edit_panel_item_title">
+								Search Tasks:
+							</h3>
+							<input type="search" class="edit_panel_item_value" placeholder="Task Name" title="task_search_input" onclick="startSearchListener()" onchange="">
+						</div>
+						<div class="edit_panel_item">
+							<h3 class="edit_panel_item_title">
+								Sort By:
+							</h3>
+							<select class="edit_panel_item_value" title="task_importance_selector" onchange="importanceChanged()">
+								<option value="1">Name</option>
+								<option value="2" selected>Task #</option>
+								<option value="3">Importance</option>
+								<option value="4">Completion</option>
+							</select>
+						</div>
+					</div>
+					<div class="edit_panel_close">
+						<button type="button" class="edit_panel_close_button special" onclick="createTask()">
+							<span class="material-symbols-rounded">
+								add_circle
+							</span>
+							<h3>
+								Task
+							</h3>
+						</button>
+						<button type="button" class="edit_panel_close_button special">
+							<span class="material-symbols-rounded">
+								cancel
+							</span>
+							<h3>
+								Close
+							</h3>
+						</button>
+					</div>
+					<div class="edit_panel_close">
+						<button type="button" class="edit_panel_close_button_single error" onclick="deleteList()">
+							<span class="material-symbols-rounded">
+								delete
+							</span>
+							<h3>
+								Delete List
+							</h3>
+						</button>
+					</div>
+				</div>
+			`), editAttributes)
 
 			taskContainer = document.querySelector(".list_data")
 
@@ -204,70 +262,77 @@ function loadList(id) {
 						</ul>
                 	</button>
                 `))
-				let editAttributes = document.querySelector(".edit_panel_replaceable")
-				editAttributes.parentNode.replaceChild(elementFromHTML(`
-					<div class="edit_panel_replaceable">
-						<div class="edit_panel_attributes">
-							<div class="edit_panel_item">
-								<h3 class="edit_panel_item_title">
-									List Name:
-								</h3>
-								<input type="text" class="edit_panel_item_value" placeholder="List Name" title="list_name_input" value="${activeList.name}">
-							</div>
-							<div class="edit_panel_item">
-								<h3 class="edit_panel_item_title">
-									Search Tasks:
-								</h3>
-								<input type="search" class="edit_panel_item_value" placeholder="Task Name" title="task_search_input" onclick="startSearchListener()" onchange="">
-							</div>
-							<div class="edit_panel_item">
-								<h3 class="edit_panel_item_title">
-									Sort By:
-								</h3>
-								<select class="edit_panel_item_value" title="task_importance_selector" onchange="importanceChanged()">
-									<option value="1">Name</option>
-									<option value="2" selected>Task #</option>
-									<option value="3">Importance</option>
-									<option value="4">Completion</option>
-								</select>
-							</div>
-						</div>
-						<div class="edit_panel_close">
-							<button type="button" class="edit_panel_close_button special">
-								<span class="material-symbols-rounded">
-									add_circle
-								</span>
-								<h3>
-									Task
-								</h3>
-							</button>
-							<button type="button" class="edit_panel_close_button special">
-								<span class="material-symbols-rounded">
-									cancel
-								</span>
-								<h3>
-									Close
-								</h3>
-							</button>
-						</div>
-						<div class="edit_panel_close">
-							<button type="button" class="edit_panel_close_button_single error" onclick="deleteList()">
-								<span class="material-symbols-rounded">
-									delete
-								</span>
-								<h3>
-									Delete List
-								</h3>
-							</button>
-						</div>
-					</div>
-				`), editAttributes)
             }
 		})
 }
 
 function createList() {
     // popup()
+	let editAttributes = document.querySelector(".edit_panel_replaceable")
+	editAttributes.parentNode.replaceChild(elementFromHTML(`
+		<div class="edit_panel_replaceable">
+			<div class="edit_panel_attributes">
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">
+						List Name:
+					</h3>
+					<input type="text" class="edit_panel_item_value" placeholder="List Name" title="list_name_input" value="">
+				</div>
+				<!-- <div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">
+						Search Tasks:
+					</h3>
+					<input type="search" class="edit_panel_item_value" placeholder="Task Name" title="task_search_input" onclick="startSearchListener()" onchange="">
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">
+						Sort By:
+					</h3>
+					<select class="edit_panel_item_value" title="task_importance_selector" onchange="importanceChanged()">
+						<option value="1">Name</option>
+						<option value="2" selected>Task #</option>
+						<option value="3">Importance</option>
+						<option value="4">Completion</option>
+					</select>
+				</div> -->
+			</div>
+			<div class="edit_panel_close">
+				<button type="button" class="edit_panel_close_button special" onclick="confirmListCreate()">
+					<span class="material-symbols-rounded">
+						check
+					</span>
+					<h3>
+						Finish
+					</h3>
+				</button>
+				<button type="button" class="edit_panel_close_button error">
+					<span class="material-symbols-rounded">
+						delete
+					</span>
+					<h3>
+						Discard
+					</h3>
+				</button>
+			</div>
+		</div>
+	`), editAttributes)
+}
+
+function confirmListCreate() {
+	let listName = document.querySelector(`.edit_panel_item_value[title="list_name_input"]`).value
+	fetch(`http://localhost:8080?cmd=mkls&cmd=${listName}`)
+		.then((res) => {
+			if(!res.ok) {
+				throw new Error("Could not create list")
+			}
+			return res.json()
+		})
+		.then((data) => {
+			console.log(data)
+		})
+		.catch((err) => {
+			console.error(err)
+		})
 }
 
 function deleteList() {
@@ -398,7 +463,7 @@ function loadTask(id) {
 				</button>
 			</div>
 			<div class="edit_panel_close">
-				<button type="button" class="edit_panel_close_button_single error" onclick="deleteList()">
+				<button type="button" class="edit_panel_close_button_single error" onclick="deleteTask()">
 					<span class="material-symbols-rounded">
 						delete
 					</span>
@@ -565,8 +630,76 @@ function closeTaskEdit() {
 	// popup(``)
 }
 
-function deleteTask() {
+function createTask() {
+	let editAttributes = document.querySelector(".edit_panel_replaceable")
+	editAttributes.parentNode.replaceChild(elementFromHTML(`
+		<div class="edit_panel_replaceable">
+			<div class="edit_panel_attributes">
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Task Name:</h3>
+					<input name="task_name_input" type="text" class="edit_panel_item_value" placeholder="Task Name" value="" autocomplete="no">
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Task Importance:</h3>
+					<select name="task_importance_selector" class="edit_panel_item_value">
+						<option value="1">Very low</option>
+						<option value="2">Low</option>
+						<option value="3" selected>Medium</option>
+						<option value="4">High</option>
+						<option value="5">Very high</option>
+					</select>
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Notes:</h3>
+					<textarea spellcheck="false" autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes"></textarea>
+				</div>
+			</div>
+			<div class="edit_panel_close">
+				<button type="button" class="edit_panel_close_button special" onclick="confirmTaskCreate()">
+					<span class="material-symbols-rounded">
+						check
+					</span>
+					<h3>
+						Finish
+					</h3>
+				</button>
+				<button type="button" class="edit_panel_close_button error" onclick="closeTaskEdit()">
+					<span class="material-symbols-rounded">
+						delete
+					</span>
+					<h3>
+						Discard
+					</h3>
+				</button>
+			</div>
+		</div>
+	`), editAttributes)
+}
 
+function confirmTaskCreate() {
+	let name = document.querySelector(`input.edit_panel_item_value[name="task_name_input"]`).value
+	let severity = document.querySelector(`select.edit_panel_item_value[name="task_importance_selector"]`).value
+	let note = document.querySelector(`textarea.edit_panel_item_value`).value
+	console.log("Task Name: " + name)
+	console.log("Task Severity: " + severity)
+	console.log("Task Note: " + note)
+	fetch(`http://localhost:8080?cmd=mktk&cmd=${name}&cmd=${severity}&cmd=${note}`)
+		.then((res) => {
+			if(!res.ok) {
+				throw new Error("Could not create new task")
+			}
+			return res.json()
+		})
+		.then((data) => {
+			console.log(data)
+		})
+		.catch((err) => {
+			console.error(err)
+		})
+}
+
+function deleteTask() {
+	console.log("for sure deleting the task")
 }
 
 function popup(content) {

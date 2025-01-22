@@ -185,10 +185,10 @@ func Help(args ...string) string {
 
 func Mkls(args ...string) (TaskList, string) {
 	var listName string
-	if len(args) == 1 {
+	if len(args) == 0 {
 		listName = ""
 	} else {
-		listName = args[1]
+		listName = args[0]
 	}
 	if listName == "" {
 		listName = "New_List_" + randHexDec(10)
@@ -328,9 +328,9 @@ func Mktk(args ...string) (TaskList, Task) {
 		fmt.Println("Incorrect Format: The command \"mktk\" uses the format: \"mktk <new-task-name> <new-task-severity>\". Where \"<new-task-name>\" is replaced witht the name of the task that you are trying to create and \"<new-task-severity>\" is replaced witht the severity/importance of the task that you are trying to create.")
 		return TaskList{}, Task{}
 	}
-	name := args[1]
-	severity, err := strconv.ParseInt(args[2], 10, 64)
-	note := args[3]
+	name := args[0]
+	severity, err := strconv.ParseInt(args[1], 10, 64)
+	note := args[2]
 	if err != nil {
 		log.Fatal(err)
 		return TaskList{}, Task{}
@@ -643,7 +643,7 @@ func RunCommand(config Config, word ...string) (any, any) {
 	case "help":
 		return Help(word...), nil
 	case "mkls":
-		return Mkls(word...)
+		return Mkls(word[1:]...)
 	case "opls":
 		return Opls(config, word...)
 	case "vwls":
@@ -653,7 +653,7 @@ func RunCommand(config Config, word ...string) (any, any) {
 		}
 		return Vwls(), nil
 	case "mktk":
-		return Mktk(word...)
+		return Mktk(word[1:]...)
 	case "edls":
 		return Edls(config, word...)
 	case "dells":

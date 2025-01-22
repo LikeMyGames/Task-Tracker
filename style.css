@@ -555,16 +555,6 @@ select.edit_panel_item_value > option {
 	font-size: 2.369rem;
 }
 
-.edit_panel_close_button:hover {
-	background-color: var(--primary-color);
-	color: var(--accent-color);
-}
-
-.edit_panel_close_button > span {
-	font-size: 3.158rem;
-	margin-right: 10px;
-}
-
 .popup {
     position: absolute;
     display: grid;
