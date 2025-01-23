@@ -510,10 +510,11 @@ func Dells(args ...string) (string, any) {
 }
 
 func Deltk(args ...string) (TaskList, Task) {
-	if activeFileName == "" {
-		fmt.Println("No list file open: A Task Manager list file must be opened for this command to function properly")
-		return TaskList{}, Task{}
-	} else if len(args) > 1 {
+	// if activeFileName == "" {
+	// 	fmt.Println("No list file open: A Task Manager list file must be opened for this command to function properly")
+	// 	return TaskList{}, Task{}
+	// }
+	if len(args) > 1 {
 		fmt.Println("Incorrect Format: use \"help deltk\" command to check format for \"deltk\" command.")
 		return TaskList{}, Task{}
 	} else if len(args) == 0 {
@@ -550,16 +551,19 @@ func Lsls(config Config) ([]string, any) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Directory of ", config.ListDirectory)
-	fmt.Println()
+	log.Println("Directory of ", config.ListDirectory)
 	outStr := make([]string, 0)
+	fileName := ""
 	for _, file := range files {
 		if file.IsDir() {
-			fmt.Println(file.Name(), "\t<DIR>")
+			log.Println(file.Name(), "\t<DIR>")
 			// outStr += file.Name() + "\t<DIR>\n"
 		} else {
-			fmt.Println(file.Name())
-			outStr = append(outStr, []string{strings.Replace(file.Name(), ".json", "", 1)}...)
+			if strings.Contains(file.Name(), ".json") {
+				fileName = strings.Replace(file.Name(), ".json", "", 1)
+				log.Println("\tList: " + fileName)
+				outStr = append(outStr, []string{fileName}...)
+			}
 		}
 
 	}
