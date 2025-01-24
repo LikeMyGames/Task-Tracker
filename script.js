@@ -320,7 +320,7 @@ function loadListAttributes() {
 				</button>
 			</div>
 			<div class="edit_panel_close">
-				<button type="button" class="edit_panel_close_button_single error" onclick="deleteList()">
+				<button type="button" class="edit_panel_close_button_single edit_panel_close_button error" onclick="deleteList()">
 					<span class="material-symbols-rounded">
 						delete
 					</span>
@@ -566,7 +566,7 @@ function loadTaskAttributes() {
 				</button>
 			</div>
 			<div class="edit_panel_close">
-				<button type="button" class="edit_panel_close_button_single error" onclick="deleteTask()">
+				<button type="button" class="edit_panel_close_button edit_panel_close_button_single error" onclick="deleteTask()">
 					<span class="material-symbols-rounded">
 						delete
 					</span>
