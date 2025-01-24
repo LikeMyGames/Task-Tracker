@@ -339,22 +339,17 @@ function createList() {
 	editAttributes.parentNode.replaceChild(elementFromHTML(`
 		<div class="edit_panel_replaceable">
 			<div class="edit_panel_attributes">
+				<h3 class="edit_panel_item_title">List Name:</h3>
 				<div class="edit_panel_item">
-					<h3 class="edit_panel_item_title">
-						List Name:
-					</h3>
+					<h3 class="edit_panel_item_title">List Name:</h3>
 					<input type="text" class="edit_panel_item_value" placeholder="List Name" title="list_name_input" value="">
 				</div>
 				<!-- <div class="edit_panel_item">
-					<h3 class="edit_panel_item_title">
-						Search Tasks:
-					</h3>
+					<h3 class="edit_panel_item_title">Search Tasks:</h3>
 					<input type="search" class="edit_panel_item_value" placeholder="Task Name" title="task_search_input" onclick="startSearchListener()" onchange="">
 				</div>
 				<div class="edit_panel_item">
-					<h3 class="edit_panel_item_title">
-						Sort By:
-					</h3>
+					<h3 class="edit_panel_item_title">Sort By:</h3>
 					<select class="edit_panel_item_value" title="task_importance_selector" onchange="importanceChanged()">
 						<option value="1">Name</option>
 						<option value="2" selected>Task #</option>

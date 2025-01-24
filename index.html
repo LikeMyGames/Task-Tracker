@@ -38,6 +38,29 @@
 				Properties
             </h2>
 			<div class="edit_panel_replaceable">
+				<div class="edit_panel_attributes">
+					<h3 class="edit_panel_title">Application Settings:</h3>
+					<div class="edit_panel_item">
+						<h3 class="edit_panel_item_title">List Directory:</h3>
+						<label for="list_directory_input" class="edit_panel_item_value"></label>
+						<input type="file" class="edit_panel_item_value" name="list_directory_input" webkitdirectory onchange="setListDirectory()">
+					</div>
+				</div>
+			</div>
+			<script>
+				document.addEventListener("DOMContentLoaded", setListDirectory);
+				const input = document.querySelector(`input[type="file"].edit_panel_item_value`)
+				const curDirs = null
+
+				function setListDirectory() {
+					input.addEventListener("change", () => {
+						curDirs = input.files
+						curDirs.array.forEach(element => {
+							alert(element)
+						});
+					})
+				}
+			</script>
         </div>
     </div>
 </body>

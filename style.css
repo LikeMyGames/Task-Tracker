@@ -513,6 +513,19 @@ button.edit_panel_item_value:hover > span {
 	font-size: 3.158rem;
 }
 
+input[type="file"].edit_panel_item_value {
+    opacity: 0;
+}
+
+label.edit_panel_item_value {
+	transition: 250ms;
+}
+
+label.edit_panel_item_value:hover {
+	transform: translate(-5px, -5px);
+	filter: drop-shadow(5px 5px var(--accent-color));
+}
+
 .edit_panel_item_value_changed {
 	background-color: var(--accent-color);
 	color: var(--secondary-color)
