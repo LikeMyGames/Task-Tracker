@@ -1,3 +1,11 @@
+//App Settings
+var AppSettings = {
+	ListDirectory: "",
+	APIPath: "http://localhost:8080",
+	DeleteCompleted: false,
+}
+
+//List Data
 var activeList = {
     "name": "i'm-changing-the-name",
     "tasks": [
@@ -33,9 +41,7 @@ var activeList = {
         }
     ]
 }
-
 var activeFileName = ""
-
 var currentTask = {
 	"name": null,
 	"severity": null,
@@ -43,6 +49,9 @@ var currentTask = {
 	"id": null
 }
 
+//List Attributes
+var searchString = ""
+var sortBy = localStorage.getItem("sortBy") || "3"
 var filterBy = {
 	TaskNum: {
 		Min: 0,
@@ -55,15 +64,16 @@ var filterBy = {
 	Completion: false
 }
 
-var searchString = ""
-
-var apiBaseURI = "http://localhost:8080"
 // https://zany-space-enigma-jv56wrqjjw4f4g6-8080.app.github.dev/ (when working on chromebook)
 // http://localhost:8080 (when working anywhere else)
 
-window.onload = ( function(){
-	getLists();
+window.addEventListener("load", () => {
+	getLists()
+	loadAppSettings()
+	console.log(localStorage.getItem("AppSettings"))
+	console.log(localStorage.getItem("AppSettings") != "" && localStorage.getItem("AppSettings") != null)
 	setTimeout(() => {
+		
 		if(localStorage.getItem("activeListID") != "" | null) {
 			loadList(localStorage.getItem("activeListID"))
 		}
@@ -83,6 +93,55 @@ function useLocalStorage() {
 	}
 }
 
+function loadAppSettings() {
+	let deletion = AppSettings.DeleteCompleted ? "check" : "close"
+	let attributes = document.querySelector(".edit_panel_replaceable")
+	attributes.parentNode.replaceChild(elementFromHTML(`
+		<div class="edit_panel_replaceable">
+			<div class="edit_panel_attributes">
+				<h3 class="edit_panel_title">Application Settings:</h3>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">List Directory:</h3>
+					<input type="text" class="edit_panel_item_value" name="listDirectory_input" value="${AppSettings.ListDirectory}" placeholder="List Directory Path" spellcheck="false" onchange="setListDir()">
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">API Path:</h3>
+					<input type="text" class="edit_panel_item_value" name="APIPath_input" value="${AppSettings.APIPath}" placeholder="API Base URI" spellcheck="false" onchange="setAPIPath()">
+				</div>
+				<div class="edit_panel_item">
+					<h3 class="edit_panel_item_title">Delete Completed Tasks:</h3>
+					<button name="deleteCompletedTasks_checkbox" type="button" class="edit_panel_item_value" onclick="deleteCompletedTasks()">
+						<span class="material-symbols-rounded">
+							${deletion}
+						</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	`), attributes)
+}
+
+function setListDir() {
+	let input = document.querySelector(`input.edit_panel_item_value[name="listDirectory_input"]`)
+	AppSettings.ListDirectory = input.value
+	localStorage.setItem("AppSettings", AppSettings)
+}
+
+function setAPIPath() {
+	console.log("Old API Path: " + AppSettings.APIPath)
+	let input = document.querySelector(`input.edit_panel_item_value[name="APIPath_input"]`)
+	AppSettings.APIPath = input.value
+	console.log("New API Path: " + AppSettings.APIPath)
+	localStorage.setItem("AppSettings", AppSettings)
+}
+
+function deleteCompletedTasks() {
+	AppSettings.DeleteCompleted = !AppSettings.DeleteCompleted
+	let checkbox = document.querySelector(`button.edit_panel_item_value[name="deleteCompletedTasks_checkbox"] > span`)
+	checkbox.textContent = AppSettings.DeleteCompleted ? "check" : "close"
+	localStorage.setItem("AppSettings", AppSettings)
+}
+
 // function help() {
 //     fetch("http://127.0.0.1:8080/help")
 //         .then(res => {
@@ -97,7 +156,7 @@ function useLocalStorage() {
 // }
 
 function getLists() {
-    fetch(`${apiBaseURI}/?cmd=lsls`)
+    fetch(`${AppSettings.APIPath}/?cmd=lsls`)
     	.then(res => {
         	if(!res.ok){
        		 	throw new Error();
@@ -147,7 +206,7 @@ function loadList(id) {
 	// 	"id": null
 	// }
 
-    fetch(`${apiBaseURI}/?cmd=opls&cmd=${listName}`)
+    fetch(`${AppSettings.APIPath}/?cmd=opls&cmd=${listName}`)
     	.then(res => {
         	if(!res.ok){
        		 	throw new Error();
@@ -156,6 +215,7 @@ function loadList(id) {
         })
 		.then(data => {
 			activeList = data.data1
+			console.log(activeList)
 			localStorage.setItem("activeList", activeList)
             let listName = document.querySelector(".list_name")
             listName.textContent = activeList.name
@@ -177,58 +237,90 @@ function loadList(id) {
 			loadListAttributes()
 
 			taskContainer = document.querySelector(".list_data")
+			switch(sortBy) {
+				case "1":
+					break
+				case "2":
+					break
+				case "3":
+					console.log(activeList.tasks)
+					for (let i = 0; i<activeList.tasks.length; i++) {
+						console.log(i)
+						loadListTask(activeList.tasks[i].name, i+1, activeList.tasks[i].severity, activeList.tasks[i].completionStatus, taskContainer)
+					}
+					break
+				case "4":
+					console.log(activeList.tasks)
+					for (let i = activeList.tasks.length-1; i>=0; i--) {
+						console.log(i)
+						loadListTask(activeList.tasks[i].name, i+1, activeList.tasks[i].severity, activeList.tasks[i].completionStatus, taskContainer)
+					}
+					break
+				case "5":
+					break
+				case "6":
+					break
+				case "7":
+					break
+				case "8":
+					break
+			}
 
             for (let i = 0; i<data.data1.tasks.length; i++) {
-				let name = data.data1.tasks[i].name
-				let taskNum = i+1
-				let importance = ""
-				// console.log("Task " + (i+1) + ": " + data.data1.tasks[i].severity)
-				switch (data.data1.tasks[i].severity) {
-					case 1:
-						importance = "Very low"
-						break
-					case 2:
-						importance = "Low"
-						break
-					case 3:
-						importance = "Medium"
-						break
-					case 4:
-						importance = "High"
-						break
-					case 5:
-						importance = "Very high"
-						break
-				}
-				let completionStatus = ""
-				if(!data.data1.tasks[i].completionStatus) {
-					completionStatus = "No"
-				} else {
-					completionStatus = "Yes"
-				}
-                taskContainer.appendChild(elementFromHTML(`
-					<button type="button" id="task-${name}" class="list_data_item" onclick="loadTask('task-${name}')">
-						<h3 class="list_data_item_title">
-							${name}
-						</h3>
-						<ul class="list_data_item_attributes">
-							<li class="list_data_item_attribute">
-								<p>Task #:</p>
-								<p class="list_data_item_task_num">${taskNum}</p>
-							</li>
-							<li class="list_data_item_attribute">
-								<p>Importance:</p>
-								<p class="list_data_item_severity">${importance}</p>
-							</li>
-							<li class="list_data_item_attribute">
-								<p>Completed?:</p>
-								<p class="list_data_item_completeion">${completionStatus}</p>
-							</li>
-						</ul>
-                	</button>
-                `))
+				loadListTask(activeList.tasks[i].name, i+1, activeList.tasks[i].severity, activeList.tasks[i].completionStatus, taskContainer)
             }
 		})
+}
+
+function loadListTask(name, taskNum, severity, completionStatus, taskContainer) {
+	let importance = ""
+	// console.log("Task " + (i+1) + ": " + data.data1.tasks[i].severity)
+	switch (severity) {
+		case 1:
+			importance = "Very low"
+			break
+		case 2:
+			importance = "Low"
+			break
+		case 3:
+			importance = "Medium"
+			break
+		case 4:
+			importance = "High"
+			break
+		case 5:
+			importance = "Very high"
+			break
+	}
+	let completionText = ""
+	if(!completionStatus) {
+		completionText = "No"
+	} else {
+		completionText = "Yes"
+	}
+	
+    taskContainer.appendChild(elementFromHTML(`
+		<button type="button" id="task-${name}" class="list_data_item" onclick="loadTask('task-${name}')">
+			<h3 class="list_data_item_title">
+				${name}
+			</h3>
+			<ul class="list_data_item_attributes">
+				<li class="list_data_item_attribute">
+					<p>Task #:</p>
+					<p class="list_data_item_task_num">${taskNum}</p>
+				</li>
+				<li class="list_data_item_attribute">
+					<p>Importance:</p>
+					<p class="list_data_item_severity">${importance}</p>
+				</li>
+				<li class="list_data_item_attribute">
+					<p>Completed?:</p>
+					<p class="list_data_item_completeion">${completionText}</p>
+				</li>
+			</ul>
+    	</button>
+    `))
+	console.log(taskContainer.childrenCount)
 }
 
 function loadListAttributes() {
@@ -250,15 +342,15 @@ function loadListAttributes() {
 				</div>
 				<div class="edit_panel_item">
 					<h3 class="edit_panel_item_title">Sort By:</h3>
-					<select class="edit_panel_item_value" title="task_importance_selector" onchange="importanceChanged()">
+					<select class="edit_panel_item_value" title="task_importance_selector" onchange="sortAttributeChange()">
 						<option value="1">Name: (A => Z)</option>
-						<option value="1">Name: (Z => A)</option>
-						<option value="2" selected>Task #: (Low => High)</option>
-						<option value="2" selected>Task #: (High => Low)</option>
-						<option value="3">Importance: (Very Low => Very High)</option>
-						<option value="3">Importance: (Very High => Very Low)</option>
-						<option value="4">Completion: (True => False)</option>
-						<option value="4">Completion: (False => True)</option>
+						<option value="2">Name: (Z => A)</option>
+						<option value="3">Task #: (Low => High)</option>
+						<option value="4">Task #: (High => Low)</option>
+						<option value="5">Importance: (Very Low => Very High)</option>
+						<option value="6">Importance: (Very High => Very Low)</option>
+						<option value="7">Completion: (True => False)</option>
+						<option value="8">Completion: (False => True)</option>
 					</select>
 				</div>
 			</div>
@@ -331,6 +423,9 @@ function loadListAttributes() {
 			</div>
 		</div>
 	`), editAttributes)
+
+	let selectedOption = document.querySelector(`.edit_panel_item_value > option[value="${sortBy}"]`)
+	selectedOption.setAttribute('selected', 'true')
 }
 
 function createList() {
@@ -386,7 +481,7 @@ function cancelCreateList() {
 
 function confirmListCreate() {
 	let listName = document.querySelector(`.edit_panel_item_value[title="list_name_input"]`).value
-	fetch(`${apiBaseURI}?cmd=mkls&cmd=${listName}`)
+	fetch(`${AppSettings.APIPath}?cmd=mkls&cmd=${listName}`)
 		.then((res) => {
 			if(!res.ok) {
 				throw new Error("Could not create list")
@@ -416,7 +511,7 @@ function deleteList() {
 		<div class="edit_panel_replaceable">
 		</div>
 	`), listAttributes)
-	fetch(`${apiBaseURI}?cmd=dells&cmd=${activeFileName}`)
+	fetch(`${AppSettings.APIPath}?cmd=dells&cmd=${activeFileName}`)
 		.then((res) => {
 			if(!res.ok) {
 				throw new Error("Response not OK")
@@ -429,11 +524,11 @@ function deleteList() {
 }
 
 function closeList() {
-	document.querySelector(".edit_panel_replaceable").innerHTML = ""
 	document.querySelector(".list_replaceable").innerHTML = ""
 	activeList = null
 	localStorage.setItem("activeListID", null)
 	document.querySelector(".list_menu_list_active").classList.remove("list_menu_list_active")
+	loadAppSettings()
 }
 
 function startSearchListener() {
@@ -454,6 +549,21 @@ function searchListener(e, input) {
 function setSearchString() {
 	let input = document.querySelector(`input.edit_panel_item_value[type="search"]`)
 	searchString = input.value
+}
+
+function sortAttributeChange() {
+	let selector = document.querySelector(`[title="task_importance_selector"].edit_panel_item_value`)
+	sortBy = selector.value
+	// let options = selector.querySelectorAll("option")
+	// options.forEach((option) => {
+	// 	option.setAttribute("selected", "false")
+	// })
+	// console.log(sortBy)
+	localStorage.setItem("sortBy", sortBy)
+	// let option = selector.querySelector(`option[value="${sortBy}"]`)
+	// option.setAttribute("selected", "true")
+	
+	loadList(localStorage.getItem("activeListID"))
 }
 
 function listFilter(str) {
@@ -638,7 +748,7 @@ function savecloseTaskEdit() {
 
 	localStorage.setItem("activeTaskID", `task-${currentTask.name}`)
 
-	fetch(`${apiBaseURI}?cmd=edls&cmd=task&cmd=${name}&cmd=${severity}&cmd=${completionStatus}&cmd=${note}&cmd=${index}&cmd=${activeFileName}`)
+	fetch(`${AppSettings.APIPath}?cmd=edls&cmd=task&cmd=${name}&cmd=${severity}&cmd=${completionStatus}&cmd=${note}&cmd=${index}&cmd=${activeFileName}`)
 		.then(res => {
 
 			console.log(res)
@@ -725,7 +835,7 @@ function confirmTaskCreate() {
 	console.log("Task Name: " + name)
 	console.log("Task Severity: " + severity)
 	console.log("Task Note: " + note)
-	fetch(`${apiBaseURI}?cmd=mktk&cmd=${name}&cmd=${severity}&cmd=${note}`)
+	fetch(`${AppSettings.APIPath}?cmd=mktk&cmd=${name}&cmd=${severity}&cmd=${note}`)
 		.then((res) => {
 			if(!res.ok) {
 				throw new Error("Could not create new task")
@@ -747,7 +857,7 @@ function discardTaskCreate() {
 function deleteTask() {
 	let task = document.querySelector(".list_data_item_active")
 	let taskName = task.id.substring(5)
-	fetch(`${apiBaseURI}?cmd=deltk&cmd=${taskName}`)
+	fetch(`${AppSettings.APIPath}?cmd=deltk&cmd=${taskName}`)
 		.then((res) => {
 			if(!res.ok){
 				throw new Error("Could not delete task properly")

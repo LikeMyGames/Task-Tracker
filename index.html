@@ -38,29 +38,33 @@
 				Properties
             </h2>
 			<div class="edit_panel_replaceable">
+				
+			</div>
+			<!-- <div class="edit_panel_replaceable">
 				<div class="edit_panel_attributes">
 					<h3 class="edit_panel_title">Application Settings:</h3>
 					<div class="edit_panel_item">
 						<h3 class="edit_panel_item_title">List Directory:</h3>
-						<label for="list_directory_input" class="edit_panel_item_value"></label>
-						<input type="file" class="edit_panel_item_value" name="list_directory_input" webkitdirectory onchange="setListDirectory()">
+						<input type="text" class="edit_panel_item_value" name="listDirectory_input" placeholder="List Directory Path" spellcheck="false" onchange="setListDir()">
+					</div>
+					<div class="edit_panel_item">
+						<h3 class="edit_panel_item_title">API Path:</h3>
+						<input type="text" class="edit_panel_item_value" name="APIPath_input" placeholder="API Base URI" spellcheck="false" onchange="setAPIPath()">
+					</div>
+					<div class="edit_panel_item">
+						<h3 class="edit_panel_item_title">API Path:</h3>
+						<input type="text" class="edit_panel_item_value" placeholder="API Base URI" spellcheck="false">
+					</div>
+					<div class="edit_panel_item">
+						<h3 class="edit_panel_item_title">Delete Completed Tasks:</h3>
+						<button name="deleteCompletedTasks_checkbox" type="button" class="edit_panel_item_value" onclick="deleteCompletedTasks()">
+							<span class="material-symbols-rounded">
+								close
+							</span>
+						</button>
 					</div>
 				</div>
-			</div>
-			<script>
-				document.addEventListener("DOMContentLoaded", setListDirectory);
-				const input = document.querySelector(`input[type="file"].edit_panel_item_value`)
-				const curDirs = null
-
-				function setListDirectory() {
-					input.addEventListener("change", () => {
-						curDirs = input.files
-						curDirs.array.forEach(element => {
-							alert(element)
-						});
-					})
-				}
-			</script>
+			</div> -->
         </div>
     </div>
 </body>

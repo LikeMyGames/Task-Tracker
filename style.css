@@ -118,7 +118,8 @@ input:focus, select:focus, textarea:focus {
 
 .error {
     background-color: var(--error-color);
-    color: var(--primary-color)
+    color: var(--primary-color);
+	transition: 250ms;
 }
 
 .error:hover {
@@ -135,22 +136,24 @@ input:focus, select:focus, textarea:focus {
 
 .special {
     background-color: var(--accent-color);
-    color: var(--primary-color)
+    color: var(--primary-color);
+	transition: 250ms;
 }
 
 .normal {
     background-color: var(--primary-color);
-    color: var(--text-color)
+    color: var(--text-color);
+    transition: 250ms;
 }
 
 .special:hover, .normal:hover {
-    background-color: var(--primary-color);
+	background-color: var(--primary-color);
 	color: var(--accent-color);
+    transform: translate(-5px, -5px);
     filter: drop-shadow(5px 5px var(--accent-color));
 }
 
 .special:active, .normal:active {
-    background-color: var(--primary-color);
     transform: translate(-2.5px, -2.5px);
     filter: drop-shadow(2.5px 2.5px var(--accent-color))
 }
@@ -473,6 +476,15 @@ input:focus, select:focus, textarea:focus {
 	background-color: var(--secondary-color);
 }
 
+input.edit_panel_item_value {
+	text-overflow: clip;
+	overflow-x: auto;
+}
+
+.edit_panel_item_value:hover {
+	background-color: var(--secondary-color);
+}
+
 .edit_panel_item_value::placeholder {
 	color: var(--primary-color)
 }
@@ -510,20 +522,6 @@ button.edit_panel_item_value > span {
 
 button.edit_panel_item_value:hover > span {
 	color: var(--accent-color);
-	font-size: 3.158rem;
-}
-
-input[type="file"].edit_panel_item_value {
-    opacity: 0;
-}
-
-label.edit_panel_item_value {
-	transition: 250ms;
-}
-
-label.edit_panel_item_value:hover {
-	transform: translate(-5px, -5px);
-	filter: drop-shadow(5px 5px var(--accent-color));
 }
 
 .edit_panel_item_value_changed {
