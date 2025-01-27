@@ -6,7 +6,8 @@
     <meta name="color-scheme" content="light dark">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="./style.css" />
-    <title>Document</title>
+	<link rel="icon" href="./icon/icon.ico">
+    <title>Task Tracker</title>
     <script src="./script.js"></script>
 </head>
 <body>
@@ -17,14 +18,16 @@
 			</h2>
 			<div class="list_menu_lists">
 			</div>
-			<button type="button" class="list_menu_add special" onclick="createList()">
-				<span class="material-symbols-rounded">
-					add_circle
-				</span>
-				<h3>
-					List
-				</h3>
-			</button>
+			<div class="list_menu_panel">
+				<button type="button" class="list_menu_panel_button special" onclick="createList()">
+					<span class="material-symbols-rounded">
+						add_circle
+					</span>
+					<h3>
+						List
+					</h3>
+				</button>
+			</div>
         </div>
         <div class="main_view">
             <h1 class="list_name">
@@ -38,33 +41,8 @@
 				Properties
             </h2>
 			<div class="edit_panel_replaceable">
-				
+
 			</div>
-			<!-- <div class="edit_panel_replaceable">
-				<div class="edit_panel_attributes">
-					<h3 class="edit_panel_title">Application Settings:</h3>
-					<div class="edit_panel_item">
-						<h3 class="edit_panel_item_title">List Directory:</h3>
-						<input type="text" class="edit_panel_item_value" name="listDirectory_input" placeholder="List Directory Path" spellcheck="false" onchange="setListDir()">
-					</div>
-					<div class="edit_panel_item">
-						<h3 class="edit_panel_item_title">API Path:</h3>
-						<input type="text" class="edit_panel_item_value" name="APIPath_input" placeholder="API Base URI" spellcheck="false" onchange="setAPIPath()">
-					</div>
-					<div class="edit_panel_item">
-						<h3 class="edit_panel_item_title">API Path:</h3>
-						<input type="text" class="edit_panel_item_value" placeholder="API Base URI" spellcheck="false">
-					</div>
-					<div class="edit_panel_item">
-						<h3 class="edit_panel_item_title">Delete Completed Tasks:</h3>
-						<button name="deleteCompletedTasks_checkbox" type="button" class="edit_panel_item_value" onclick="deleteCompletedTasks()">
-							<span class="material-symbols-rounded">
-								close
-							</span>
-						</button>
-					</div>
-				</div>
-			</div> -->
         </div>
     </div>
 </body>

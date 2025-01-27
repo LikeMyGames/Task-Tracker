@@ -1,16 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wdth,wght@62.5..100,100..900&family=Pixelify+Sans:wght@400..700&display=swap');
+
 :root{
     --main-font: "Pixelify Sans", Helvetica, sans-serif;
     --mono-font: "Noto Sans Mono", monospace;
-    --background-color: #070907;
+    /* --background-color: #070907;
     --primary-color: #373737;
     --secondary-color: #1c1c1c;
     --accent-color: #92ff5c;
+	--text-color: #eaf1ec; */
     --note-color: #5cb2ff;
     --warning-color: #ffec5c;
     --error-color: #ff5c5c;
-    --text-color: #eaf1ec;
+    
 }
+
+@media only screen and (prefers-color-scheme: light) {
+	:root {
+		--text-color: #0e1510;
+		--background-color: #f6f8f6;
+		--primary-color: #c7c7c7;
+		--secondary-color: #e3e3e3;
+		--accent-color: #36a300;
+	}
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+	:root {
+		--text-color: #eaf1ec;
+		--background-color: #070907;
+		--primary-color: #373737;
+		--secondary-color: #1c1c1c;
+		--accent-color: #92ff5c;
+	}
+}
+
+
 
 * {
     box-sizing: border-box;
@@ -20,8 +44,7 @@
 html, body {
     width: 100vw;
     height: 100vh;
-    overflow: none;
-
+    overflow: hidden;
     margin: 0px;
     background-color: var(--background-color);
     color: var(--text-color);
@@ -93,6 +116,8 @@ small {
 .material-symbols-rounded {
     font-size: 3.158rem;
     font-weight: 700;
+	font-variation-settings: 
+	'wght' 700;
 }
 
 button, input, select, textarea {
@@ -240,6 +265,7 @@ input:focus, select:focus, textarea:focus {
 
 .list_menu_item_title {
     margin: 0px;
+	color: var(--text-color)
 }
 
 .list_menu_list:hover {
@@ -250,21 +276,30 @@ input:focus, select:focus, textarea:focus {
     color: var(--primary-color);
 }
 
-.list_menu_add {
+.list_menu_panel {
     width: 100%;
-    height: 75px;
-    border-radius: 25px;
+	height: 150px;
+	margin-top: 40px;
+	padding: 10px;
+	border-radius: 25px;
+	background-color: var(--secondary-color);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.list_menu_panel_button {
+	width: 100%;
+    height: 100%;
+    border-radius: 15px;
     border: none;
     outline: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* color: var(--primary-color);
-    background-color: var(--accent-color); */
-    transition: 250ms;
 }
 
-.list_menu_add > .material-symbols-rounded {
+.list_menu_panel_button > .material-symbols-rounded {
     margin-right: 10px;
 }
 
@@ -348,6 +383,7 @@ input:focus, select:focus, textarea:focus {
     margin: 10px;
     margin-left: 15px;
     margin-bottom: 0px;
+	color: var(--text-color);
     transition: 250ms;
 }
 
@@ -360,6 +396,7 @@ input:focus, select:focus, textarea:focus {
     margin-left: 15px;
     margin-bottom: 10px;
     font-family: var(--main-font);
+	color: var(--text-color);
     transition: 250ms;
 }
 
@@ -473,6 +510,7 @@ input:focus, select:focus, textarea:focus {
     border-radius: 10px;
     padding-left: 10px;
     font-family: var(--main-font);
+	color: var(--text-color);
 	background-color: var(--secondary-color);
 }
 
@@ -578,6 +616,8 @@ select.edit_panel_item_value > option {
     padding-left: 10px;
     font-family: var(--main-font);
 	background-color: var(--secondary-color);
+	color: var(--text-color);
+	transition: 250ms;
 }
 
 .edit_panel_item_range_value:last-child {
@@ -605,8 +645,10 @@ select.edit_panel_item_value > option {
 }
 
 .edit_panel_close_button {
-	width: 100%;
+	/* width: 1fr; */
+	/* width: minmax(0.5fr, 1fr); */
 	height: 100%;
+	width: 100%;
 	border-radius: 15px;
 	border: none;
 	outline: none;
@@ -688,4 +730,80 @@ select.edit_panel_item_value > option {
 
 .popup_action_close > h3 {
     margin: 0px;
+}
+
+@media not screen and (min-width: 1280px) and (min-height: 820px) {
+    .main {
+        grid-template-columns: 1fr  minmax(400px, 30vw);
+        grid-template-rows: minmax(150px, 10vh) 1fr;
+    }
+
+    .list_menu {
+        grid-column: 1 / 3;
+        grid-row: 1 / 2;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .list_menu > * {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-right: 40px;
+    }
+    
+    .list_menu:last-child {
+        margin-right: 0px;
+    }
+
+    .list_menu_title {
+        width: 300px;
+    }
+
+    .list_menu_lists {
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+        width: 1fr;
+    }
+
+    .list_menu_list {
+        margin-right: 10px;
+        min-width: 250px;
+        margin-bottom: 0px;
+    }
+
+    .list_menu_list:last-child {
+        margin-right: 0px;
+    }
+
+    .list_menu_item_title {
+        justify-content: left;
+        text-overflow: ellipsis;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        
+    }
+
+    .list_menu_panel {
+        margin-right: 0px;
+        width: 250px;
+        height: 75px;
+    }
+
+    .main_view {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+    }
+
+    .edit_panel {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+    }
+
+    
 }

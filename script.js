@@ -68,12 +68,16 @@ var filterBy = {
 // http://localhost:8080 (when working anywhere else)
 
 window.addEventListener("load", () => {
+	if(JSON.parse(localStorage.getItem("AppSettings")) !== null) {
+		AppSettings = JSON.parse(localStorage.getItem("AppSettings"))
+		loadAppSettings()
+		updateListDir()
+	} else {
+		loadAppSettings()
+		updateListDir()
+	}
 	getLists()
-	loadAppSettings()
-	console.log(localStorage.getItem("AppSettings"))
-	console.log(localStorage.getItem("AppSettings") != "" && localStorage.getItem("AppSettings") != null)
 	setTimeout(() => {
-		
 		if(localStorage.getItem("activeListID") != "" | null) {
 			loadList(localStorage.getItem("activeListID"))
 		}
@@ -124,7 +128,26 @@ function loadAppSettings() {
 function setListDir() {
 	let input = document.querySelector(`input.edit_panel_item_value[name="listDirectory_input"]`)
 	AppSettings.ListDirectory = input.value
-	localStorage.setItem("AppSettings", AppSettings)
+	localStorage.setItem("AppSettings", JSON.stringify(AppSettings))
+	console.log(JSON.parse(localStorage.getItem("AppSettings")))
+	updateListDir()
+}
+
+function updateListDir() {
+	console.log(`${AppSettings.APIPath}/?cmd=cslsdir&cmd=${AppSettings.ListDirectory}`)
+	fetch(`${AppSettings.APIPath}/?cmd=cslsdir&cmd=${AppSettings.ListDirectory}`)
+		.then((res) => {
+			if(!res.ok) {
+				throw new Error("Could not update List Directory")
+			}
+			return res.json()
+		})
+		.then((data) => {
+			console.log(data)
+		})
+		.catch((err) => {
+			console.error(err)
+		})
 }
 
 function setAPIPath() {
@@ -132,14 +155,16 @@ function setAPIPath() {
 	let input = document.querySelector(`input.edit_panel_item_value[name="APIPath_input"]`)
 	AppSettings.APIPath = input.value
 	console.log("New API Path: " + AppSettings.APIPath)
-	localStorage.setItem("AppSettings", AppSettings)
+	localStorage.setItem("AppSettings", JSON.stringify(AppSettings))
+	console.log(JSON.parse(localStorage.getItem("AppSettings")))
 }
 
 function deleteCompletedTasks() {
 	AppSettings.DeleteCompleted = !AppSettings.DeleteCompleted
 	let checkbox = document.querySelector(`button.edit_panel_item_value[name="deleteCompletedTasks_checkbox"] > span`)
 	checkbox.textContent = AppSettings.DeleteCompleted ? "check" : "close"
-	localStorage.setItem("AppSettings", AppSettings)
+	localStorage.setItem("AppSettings", JSON.stringify(AppSettings))
+	console.log(JSON.parse(localStorage.getItem("AppSettings")))
 }
 
 // function help() {
@@ -430,6 +455,10 @@ function loadListAttributes() {
 
 function createList() {
     // popup()
+	console.log(localStorage.getItem("activeListID") !== null)
+	if(localStorage.getItem("activeListID") === null){
+		closeList()
+	}
 	let editAttributes = document.querySelector(".edit_panel_replaceable")
 	editAttributes.parentNode.replaceChild(elementFromHTML(`
 		<div class="edit_panel_replaceable">
@@ -462,7 +491,7 @@ function createList() {
 						Finish
 					</h3>
 				</button>
-				<button type="button" class="edit_panel_close_button error">
+				<button type="button" class="edit_panel_close_button error" onclick="cancelCreateList()">
 					<span class="material-symbols-rounded">
 						delete
 					</span>
@@ -476,7 +505,7 @@ function createList() {
 }
 
 function cancelCreateList() {
-	loadListAttributes()
+	loadAppSettings()
 }
 
 function confirmListCreate() {
