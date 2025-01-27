@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/LikeMyGames/Task-Tracker/API/TaskManager"
 )
@@ -17,8 +18,15 @@ func main() {
 	}
 	dir, _ := TaskManager.RunCommand(config, []string{"wd"}...)
 	dirStr := dir.(string)
-	config.ListDirectory = dirStr[:(len(dirStr)-5)] + "Lists/"
-	log.Println(config.ListDirectory)
+	// log.Println(dirStr)
+	if strings.Contains(dirStr, "API/") {
+		dirStr = strings.Trim(dirStr, "API/")
+	} else if strings.Contains(dirStr, "API") {
+		dirStr = strings.Trim(dirStr, "API")
+	}
+	// log.Println(dirStr)
+	config.ListDirectory = dirStr + "Lists/"
+	log.Println("List Directory:\t" + config.ListDirectory)
 
 	// Hello world, the web server
 	handler := func(w http.ResponseWriter, req *http.Request) {
