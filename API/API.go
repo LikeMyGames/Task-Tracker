@@ -5,18 +5,19 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/LikeMyGames/TaskManagerWithGUI/API/TaskManager"
+	"github.com/LikeMyGames/Task-Tracker/API/TaskManager"
 )
 
 func main() {
 	config := TaskManager.Config{
-		ListDirectory:          "G:/Projects/VSCode/TaskManagerWithGUI/Lists/",
+		ListDirectory:          "G:/Projects/VSCode/Task Tracker/Lists/",
 		FileNameSameAsListName: true,
 		DeleteCompletedTasks:   true,
 		SortAttribute:          "task #",
 	}
 	dir, _ := TaskManager.RunCommand(config, []string{"wd"}...)
-	config.ListDirectory = dir.(string) + "/"
+	dirStr := dir.(string)
+	config.ListDirectory = dirStr[:(len(dirStr)-5)] + "Lists/"
 	log.Println(config.ListDirectory)
 
 	// Hello world, the web server
@@ -25,11 +26,6 @@ func main() {
 		cmd := queryParams["cmd"]
 
 		log.Println("\"cmd\" URL query value: ", cmd)
-		if cmd[0] == "cdlsdir" {
-			config.ListDirectory = cmd[1]
-			return
-		}
-
 		if len(cmd) == 0 {
 			help, _ := TaskManager.RunCommand(config, []string{"help"}...)
 			jsonHelp, err := json.Marshal(help)
@@ -40,6 +36,11 @@ func main() {
 			w.Write([]byte(jsonHelp))
 			return
 		}
+		if cmd[0] == "cdlsdir" {
+			config.ListDirectory = cmd[1]
+			return
+		}
+
 		data, data2 := TaskManager.RunCommand(config, cmd...)
 		log.Println("data1: ", data)
 		log.Println("data2: ", data2)
