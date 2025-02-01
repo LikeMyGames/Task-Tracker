@@ -265,7 +265,12 @@ input:focus, select:focus, textarea:focus {
 
 .list_menu_item_title {
     margin: 0px;
-	color: var(--text-color)
+	color: var(--text-color);
+    justify-content: left;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .list_menu_list:hover {
@@ -568,7 +573,9 @@ button.edit_panel_item_value:hover > span {
 }
 
 .edit_panel_item_value_changed:hover {
-    filter: drop-shadow(5px 5px var(--secondary-color))
+    filter: drop-shadow(5px 5px var(--accent-color));
+	background-color: var(--secondary-color);
+	color: var(--accent-color);
 }
 
 button.edit_panel_item_value_changed > span {
@@ -777,16 +784,6 @@ select.edit_panel_item_value > option {
 
     .list_menu_list:last-child {
         margin-right: 0px;
-    }
-
-    .list_menu_item_title {
-        justify-content: left;
-        text-overflow: ellipsis;
-        text-align: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        
     }
 
     .list_menu_panel {

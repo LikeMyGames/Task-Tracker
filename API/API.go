@@ -17,15 +17,20 @@ func main() {
 		SortAttribute:          "task #",
 	}
 	dir, _ := TaskManager.RunCommand(config, []string{"wd"}...)
+	log.Println(dir)
 	dirStr := dir.(string)
+	log.Println(dirStr)
 	// log.Println(dirStr)
 	if strings.Contains(dirStr, "API/") {
 		dirStr = strings.Trim(dirStr, "API/")
+		config.ListDirectory = dirStr + "Lists/"
 	} else if strings.Contains(dirStr, "API") {
 		dirStr = strings.Trim(dirStr, "API")
+		config.ListDirectory = dirStr + "Lists/"
+	} else {
+		config.ListDirectory = dirStr + "/"
 	}
-	// log.Println(dirStr)
-	config.ListDirectory = dirStr + "Lists/"
+	log.Println(dirStr)
 	log.Println("List Directory:\t" + config.ListDirectory)
 
 	// Hello world, the web server

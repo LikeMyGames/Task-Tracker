@@ -720,7 +720,7 @@ func saveActiveListToJSON() {
 	log.Println(activeList)
 	log.Println("marshalling current activeList into json")
 
-	jsonData, err := json.Marshal(activeList)
+	jsonData, err := json.MarshalIndent(activeList, "", "\t")
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -762,7 +762,7 @@ func getCurWD() string {
 		log.Fatal(err)
 		return ""
 	}
-	// log.Println(str)
+	log.Println(str)
 	str = strings.ReplaceAll(str, "\\", "/")
 	return str
 }

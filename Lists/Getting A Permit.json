@@ -1,1 +1,35 @@
-{"name":"Getting A Permit","tasks":[{"name":"Create List","severity":3,"completionStatus":false,"note":"Create a list of things that i need to do to get a permit in california"},{"name":"Find Driver's Ed School","severity":3,"completionStatus":false,"note":"Find a school that is reputable and entirely online."},{"name":"Find Offline Required Parts","severity":3,"completionStatus":false,"note":"I need to find and learn about all of the things that the drivers ed school i choose doesn’t offer. I also need to find out what mom and dad will have to do."},{"name":"Complete Driver's Ed","severity":3,"completionStatus":false,"note":"Complete the teaching part of the drivers and course and prepare for the dmv test."},{"name":"Take DMV Test","severity":3,"completionStatus":false,"note":"Take the DMV test and GET A PERMIT!!!! WOOHOO🎉🎉🥳🥳🎉🎉"}]}
+{
+	"name": "Getting A Permit",
+	"tasks": [
+		{
+			"name": "Create List",
+			"severity": 3,
+			"completionStatus": false,
+			"note": "Create a list of things that i need to do to get a permit in california"
+		},
+		{
+			"name": "Find Drivers Ed School",
+			"severity": 3,
+			"completionStatus": false,
+			"note": "Find a school that is reputable and entirely online."
+		},
+		{
+			"name": "Find Offline Required Parts",
+			"severity": 3,
+			"completionStatus": false,
+			"note": "I need to find and learn about all of the things that the drivers ed school i choose doesn’t offer. I also need to find out what mom and dad will have to do."
+		},
+		{
+			"name": "Complete Drivers Ed",
+			"severity": 3,
+			"completionStatus": false,
+			"note": "Complete the teaching part of the drivers and course and prepare for the dmv test."
+		},
+		{
+			"name": "Take DMV Test",
+			"severity": 3,
+			"completionStatus": false,
+			"note": "Take the DMV test and GET A PERMIT!!!! WOOHOO🎉🎉🥳🥳🎉🎉"
+		}
+	]
+}

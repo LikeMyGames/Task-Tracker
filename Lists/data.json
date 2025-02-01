@@ -1,1 +1,23 @@
-{"name":"i'm-changing-the-name","tasks":[{"name":"feed poppy dinner","severity":4,"completionStatus":false,"note":"undefined"},{"name":"Test-Task","severity":1,"completionStatus":false,"note":"undefined"}]}
+{
+	"name": "i'm-changing-the-name",
+	"tasks": [
+		{
+			"name": "feed poppy dinner",
+			"severity": 1,
+			"completionStatus": false,
+			"note": ""
+		},
+		{
+			"name": "Test-Task",
+			"severity": 1,
+			"completionStatus": false,
+			"note": ""
+		},
+		{
+			"name": "hello whos there",
+			"severity": 3,
+			"completionStatus": false,
+			"note": ""
+		}
+	]
+}

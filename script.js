@@ -46,6 +46,7 @@ var currentTask = {
 	"name": null,
 	"severity": null,
 	"completionStatus": null,
+	"note": null,
 	"id": null
 }
 
@@ -325,7 +326,7 @@ function loadListTask(name, taskNum, severity, completionStatus, taskContainer) 
 	}
 	
     taskContainer.appendChild(elementFromHTML(`
-		<button type="button" id="task-${name}" class="list_data_item" onclick="loadTask('task-${name}')">
+		<button type="button" id="task-${name}" class="list_data_item" onclick='loadTask("task-${name}")'>
 			<h3 class="list_data_item_title">
 				${name}
 			</h3>
@@ -345,7 +346,6 @@ function loadListTask(name, taskNum, severity, completionStatus, taskContainer) 
 			</ul>
     	</button>
     `))
-	console.log(taskContainer.childrenCount)
 }
 
 function loadListAttributes() {
@@ -630,6 +630,8 @@ function loadTask(id) {
 	currentTask.name =  activeList.tasks[currentTask.index].name
 	currentTask.severity = activeList.tasks[currentTask.index].severity
 	currentTask.completionStatus = activeList.tasks[currentTask.index].completionStatus
+	currentTask.note = activeList.tasks[currentTask.index].note
+	console.log(currentTask.note)
 
 	let completionStatus = "close"
 	if(currentTask.completionStatus){
@@ -649,6 +651,7 @@ function loadTaskAttributes() {
 	if(currentTask.completionStatus) {
 		completionStatus = "check"
 	}
+	console.log(currentTask.note)
 	let editAttributes = document.querySelector(".edit_panel_replaceable")
 	editAttributes.parentNode.replaceChild(elementFromHTML(`
 		<div class="edit_panel_replaceable">
@@ -678,7 +681,7 @@ function loadTaskAttributes() {
 				</div>
 				<div class="edit_panel_item">
 					<h3 class="edit_panel_item_title">Notes:</h3>
-					<textarea autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes" onchange="taskNotesChanged()" ></textarea>
+					<textarea autocomplete="off" class="edit_panel_item_value" label="notes_edit_input" placeholder="Notes" onchange="taskNotesChanged()" value="">${currentTask.note}</textarea>
 				</div>
 			</div>
 			<div class="edit_panel_close">
@@ -755,8 +758,8 @@ function taskCompletionChanged() {
 }
 
 function taskNotesChanged(){
-	let note = document.querySelector(`input.edit_panel_item_value`)
-	// currentTask.note = note.value
+	let note = document.querySelector(`textarea.edit_panel_item_value`)
+	currentTask.note = note.value
 	if(currentTask.note != activeList.tasks[currentTask.index].note){
 		note.classList.add("edit_panel_item_value_changed")
 	} else {
@@ -779,15 +782,14 @@ function savecloseTaskEdit() {
 
 	fetch(`${AppSettings.APIPath}?cmd=edls&cmd=task&cmd=${name}&cmd=${severity}&cmd=${completionStatus}&cmd=${note}&cmd=${index}&cmd=${activeFileName}`)
 		.then(res => {
-
-			console.log(res)
-			// if(!res.ok) {
-			// 	throw new Error
-			// }
-			// return res.json()
+			if(!res.ok) {
+				throw new Error
+			}
+			return res.json()
 		})
 		.then(data => {
 			activeList = data.data1
+			closeTaskEdit()
 		})
 }
 
@@ -856,9 +858,8 @@ function createTask() {
 		</div>
 	`), editAttributes)
 }
-
 function confirmTaskCreate() {
-	let name = document.querySelector(`input.edit_panel_item_value[name="task_name_input"]`).value
+	let name = document.querySelector(`input.edit_panel_item_value[name="task_name_input"]`).value.replace(/["'`]+/g, "")
 	let severity = document.querySelector(`select.edit_panel_item_value[name="task_importance_selector"]`).value
 	let note = document.querySelector(`textarea.edit_panel_item_value`).value
 	console.log("Task Name: " + name)
@@ -873,6 +874,7 @@ function confirmTaskCreate() {
 		})
 		.then((data) => {
 			console.log(data)
+			loadList("list-" + activeFileName)
 		})
 		.catch((err) => {
 			console.error(err)
@@ -891,7 +893,7 @@ function deleteTask() {
 			if(!res.ok){
 				throw new Error("Could not delete task properly")
 			}
-			return jes.json()
+			return res.json()
 		})
 		.then((data) => {
 			console.log("Task Deleted: " + data.data2.name)
@@ -907,6 +909,7 @@ function deleteTask() {
 			}
 			localStorage.setItem("activeTaskID", null)
 			loadListAttributes()
+			loadList("list-" + activeFileName)
 		})
 		.catch((err) => {
 			console.log(err)
