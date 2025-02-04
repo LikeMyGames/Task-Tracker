@@ -39,6 +39,7 @@
 * {
     box-sizing: border-box;
     font-family: var(--main-font);
+    app-region: no-drag;
 }
 
 html, body {
@@ -183,6 +184,21 @@ input:focus, select:focus, textarea:focus {
     filter: drop-shadow(2.5px 2.5px var(--accent-color))
 }
 
+.drag_region {
+    app-region: drag; 
+    -webkit-user-select: none;
+    user-select: none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    height: 30px;
+    width: 100vw;
+}
+
+.drag_region:active {
+    background-color: red;
+}
+
 .main {
     width: 100vw;
     height: 100vh;
@@ -215,6 +231,7 @@ input:focus, select:focus, textarea:focus {
 
     border-radius: 25px;
     margin-top: 20px;
+    padding: 10px;
 
     background-color: var(--secondary-color);
 }
