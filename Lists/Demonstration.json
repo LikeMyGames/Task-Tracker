@@ -1,26 +1,26 @@
 {
-	"name": "i'm-changing-the-name",
+	"name": "Demonstration",
 	"tasks": [
 		{
-			"name": "feed poppy dinner",
+			"name": "Example 1",
 			"severity": 1,
 			"completionStatus": false,
 			"note": ""
 		},
 		{
-			"name": "Test-Task",
-			"severity": 1,
-			"completionStatus": false,
-			"note": ""
-		},
-		{
-			"name": "hello whos there",
+			"name": "Example 2",
 			"severity": 3,
 			"completionStatus": false,
 			"note": ""
 		},
 		{
-			"name": "test1",
+			"name": "Example 3",
+			"severity": 3,
+			"completionStatus": false,
+			"note": ""
+		},
+		{
+			"name": "Example 4",
 			"severity": 3,
 			"completionStatus": false,
 			"note": ""

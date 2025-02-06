@@ -196,7 +196,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .drag_region:active {
-    background-color: red;
+    /* background-color: red; */
 }
 
 .main {

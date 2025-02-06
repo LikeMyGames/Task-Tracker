@@ -92,14 +92,14 @@ window.addEventListener("load", () => {
 })
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-	document.querySelector(`link[rel="manifest"`).setAttribute("href", "/icons/favicon/darksite.webmanifest")
+	document.querySelector(`link[rel="manifest"]`).setAttribute("href", "/icons/favicon/darkmanifest.json")
 } else {
-	document.querySelector(`link[rel="manifest"`).setAttribute("href", "/icons/favicon/lightsite.webmanifest")
+	document.querySelector(`link[rel="manifest"]`).setAttribute("href", "/icons/favicon/lightmanifest.json")
 }
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
 	let newColorScheme = event.matches ? "dark" : "light"
-	document.querySelector(`link[rel="manifest"`).setAttribute("href", newColorScheme == "dark" ? "/icons/favicon/darksite.webmanifest" : "/icons/favicon/lightsite.webmanifest")
+	document.querySelector(`link[rel="manifest"]`).setAttribute("href", newColorScheme == "dark" ? "/icons/favicon/darkmanifest.json" : "/icons/favicon/lightmanifest.json")
 })
 
 function useLocalStorage() {
