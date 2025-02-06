@@ -89,7 +89,18 @@ window.addEventListener("load", () => {
 		}, 25)
 	}, 25)
 	
- })
+})
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+	document.querySelector(`link[rel="manifest"`).setAttribute("href", "/icons/favicon/darksite.webmanifest")
+} else {
+	document.querySelector(`link[rel="manifest"`).setAttribute("href", "/icons/favicon/lightsite.webmanifest")
+}
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+	let newColorScheme = event.matches ? "dark" : "light"
+	document.querySelector(`link[rel="manifest"`).setAttribute("href", newColorScheme == "dark" ? "/icons/favicon/darksite.webmanifest" : "/icons/favicon/lightsite.webmanifest")
+})
 
 function useLocalStorage() {
 	if(localStorage.getItem("activeListID") != "" | null) {
@@ -858,6 +869,7 @@ function createTask() {
 		</div>
 	`), editAttributes)
 }
+
 function confirmTaskCreate() {
 	let name = document.querySelector(`input.edit_panel_item_value[name="task_name_input"]`).value.replace(/["'`]+/g, "")
 	let severity = document.querySelector(`select.edit_panel_item_value[name="task_importance_selector"]`).value
